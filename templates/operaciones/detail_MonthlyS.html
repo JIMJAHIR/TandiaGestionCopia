@@ -1,0 +1,444 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="icon" href="{{ url_for('static', filename='images/tandia_icon.png') }}" type="image/x-icon">
+  <title>Detalle Atenciones</title>
+</head>
+
+<body>
+  {% include 'operaciones/headerSupport.html' %}
+
+  <div class="header">
+    <!--<form id="search-form" method="POST" action="/follow_up">
+      <input type="text" id="search-input" name="ruc" placeholder="Buscar por RUC...">
+      <button type="submit">Buscar</button>-->
+    </form>
+    <button type="button" class="buttom_header newAtention">Nueva Atencion</button>
+  </div>
+
+  <div class="table-container">
+    <table class="clientes">
+      <thead>
+        <tr>
+          <th style="display:none;">ID</th>
+          <th>CONTRATO</th>
+          <th>COLABORADOR</th>
+          <th>PROBLEMA</th>
+          <th>ESTADO</th>
+          <th>MODULO</th>
+          <th>DERIVADO</th>
+          <th>TICKET</th>
+          <th>COMENTARIO</th>
+          <th>ACCIONES</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for details in details %}
+        <tr>
+          <td style="display:none;">{{ details[0] }}</td>
+          <td>{{ details[17] }}</td>
+          <td>{{ details[26] }}</td>
+          <td>{{ details[5] }}</td>
+
+          {% if details[6] == 'EN PROCESO' %}
+          <td><a class="orange-proces active-button"> EN PROCESO </a></td>
+          {% elif details[6] == 'DERIVADO' %}
+          <td><a class="red-false active-button"> DERIVADO </a></td>
+          {% else %}
+          <td class="green-true"> FINALIZADO </td>
+          {% endif %}
+
+          <td>{{ details[7] }}</td>
+          {% if details[8] == '1' %}
+          <td class="green-true"> Sí </td>
+          {% else %}
+          <td class="red-false">No</td>
+          {% endif %}
+          </td>
+          <td><a href="{{details[9]}}" target="_blank">Ver Ticket</a></td>
+
+          {% if details[10] == '' %}
+          <td><a class="edit-button orange-proces"> REGISTRAR </a></td>
+          {% else %}
+          <td>{{ details[10] }}</td>
+          {% endif %}
+
+          <td>
+            <a href="{{ url_for('operaciones.detail_support', id_details=details[0]) }}" target="_blank"><i
+                class="fa-solid fa-eye"></i></a>
+            <a class="call-button"><i class="fa-solid fa-phone"></i></a>
+            <a class="derivar-button"><i class="fa-solid fa-handshake"></i></a>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+    <div class="pagination">
+      <button id="prevPage"><i class="fa-solid fa-backward"></i></button>
+      <button id="prevPageNumber">0</button>
+      <button id="currentPage">1</button>
+      <button id="nextPageNumber">2</button>
+      <button id="nextPage"><i class="fa-solid fa-forward"></i></button>
+    </div>
+  </div>
+
+  <div id="derivar-popup" class="popup">
+    <div class="popup-content">
+      <h2>Confirmación</h2>
+      <p>¿Desea derivar el caso a otra area?</p>
+
+      <form method="post" action="/detail_support_derived" autocomplete="off">
+        <input type="hidden" id="detail_monthly_id" name="detail_monthly_id" value="">
+        <input type="hidden" id="register_id" name="register_id" value="{{ register_id }}">
+        <div class="newInput-container">
+          <label class="label-overlay">Registrar Ticket</label>
+          <input class="styled-input" type="text" id="ticket" name="ticket">
+          <button type="submit" class="styled-input styled-accept-popUp" id="confirm-derivar">Aceptar</button>
+          <button class="styled-input styled-cancel-popUp" id="derivar-cancel">Cancelar</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <div id="call-popup" class="popup">
+    <div class="popup-content">
+      <h2>Confirmación</h2>
+      <p>Registrar seguimiento de soporte!</p>
+
+      <form method="post" action="/detail_support_contact" autocomplete="off">
+        <input type="hidden" id="register_id" name="register_id" value="{{ register_id }}">
+        <input type="hidden" id="detail_id" name="detail_id" value="">
+
+        <div class="newInput-container">
+          <label class="label-overlay">Clasificación</label>
+          <select class="styled-input" name="type_contact">
+            <option value="LLAMADA">LLAMADA</option>
+            <option value="WHATSAPP">WHATSAPP</option>
+          </select>
+        </div>
+
+        <div class="newInput-container">
+          <label class="label-overlay">Comentario</label>
+          <input class="styled-input" type="text" id="comment_contact" name="comment_contact" required>
+          <button type="submit" class="styled-input styled-accept-popUp" id="confirm-call">Aceptar</button>
+          <button class="styled-input styled-cancel-popUp" id="call-cancel">Cancelar</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <div id="edit-popup" class="popup">
+    <div class="popup-content">
+      <h2>Confirmación</h2>
+      <p>Registrar comentario de soporte!</p>
+      <form method="post" action="/detail_support_comment" autocomplete="off">
+        <input type="hidden" id="detail_monthly" name="detail_monthly" value="">
+        <input type="hidden" id="register_id" name="register_id" value="{{ register_id }}">
+
+        <div class="newInput-container">
+          <label class="label-overlay">Comentario</label>
+          <input class="styled-input" type="text" id="commentry" name="commentry">
+        </div>
+
+        <button type="submit" class="styled-input styled-accept-popUp" id="confirm-edit">Aceptar</button>
+        <button class="styled-input styled-cancel-popUp" id="edit-cancel">Cancelar</button>
+      </form>
+
+    </div>
+  </div>
+
+  <div id="active-popup" class="popup">
+    <div class="popup-content">
+      <h2>Confirmación</h2>
+      <p>Finalizar atencion!</p>
+
+      <form method="post" action="/endDetailSupport" autocomplete="off">
+        <input type="hidden" id="detail_monthly_S" name="detail_monthly_S" value="">
+        <input type="hidden" id="register_id" name="register_id" value="{{ register_id }}">
+        <button type="submit" class="styled-input styled-accept-popUp" id="confirm-active">Aceptar</button>
+        <button class="styled-input styled-cancel-popUp" id="active-cancel">Cancelar</button>
+      </form>
+    </div>
+  </div>
+
+  <div id="newAtention-popup" class="popup">
+    <div class="popup-content">
+      <h2>Registrar Atencion</h2>
+
+      <form method="post" action="/newAtention" autocomplete="off">
+        <input type="hidden" id="register_id" name="register_id" value="{{ register_id }}">
+
+        <div class="newInput-container">
+          <label class="label-overlay">Ruc</label>
+          <input class="styled-input" type="text" id="ruc_support" name="ruc_support" required>
+          <span class="ruc-validation-message" id="ruc-validation-message"></span>
+        </div>
+
+        <div class="newInput-container">
+          <label class="label-overlay">Contrato</label>
+          <input class="styled-input" type="text" id="contract_number" name="contract_number" required>
+        </div>
+
+        <div class="newInput-container">
+          <label class="label-overlay">Problema</label>
+          <select class="styled-input" id="problem" name="problem" required>
+            <option value="Ventas fuera de fecha">Ventas fuera de fecha</option>
+            <option value="Modificacion de rol">Modificación de rol</option>
+            <option value="Carga o expiración de CD">Carga o expiración de CD</option>
+            <option value="Comprobante registrado con otros datos">Comprobante registrado con otros datos</option>
+            <option value="Problema con venta de productos gratuitos">Problema con venta de productos gratuitos</option>
+            <option value="Problemas de impuestos. (Exonerado, IGV10%)">Problemas de impuestos. (Exonerado, IGV10%)
+            </option>
+            <option value="Carga de Excel">Carga de Excel</option>
+            <option value="Consulta sobre el llenado de Excel">Consulta sobre el llenado de Excel</option>
+            <option value="Consulta sobre cambio de impuesto">Consulta sobre cambio de impuesto</option>
+            <option value="Consultas sobre el uso del sistema">Consultas sobre el uso del sistema</option>
+            <option value="Modificar información de la compañía. (Logo, etc)">Modificar información de la compañía.
+              (Logo, etc)</option>
+            <option value="Problemas de Kardex">Problemas de Kardex</option>
+            <option value="Problemas de Caja">Problemas de Caja</option>
+            <option value="Configuración de impresora">Configuración de impresora</option>
+            <option value="Borrar caché">Borrar caché</option>
+            <option value="Crear cta. bancaria (Yape, Plin, etc)">Crear cta. bancaria (Yape, Plin, etc)</option>
+            <option value="Información Ecommerce">Información Ecommerce</option>
+            <option value="Eliminar productos - categorias">Eliminar productos - categorías</option>
+            <option value="Resumen diario (1079)">Resumen diario (1079)</option>
+            <option value="Cambiar estado de ventas">Cambiar estado de ventas</option>
+            <option value="Crear usuario, tienda o razon social (información)">Crear usuario, tienda o razón social
+              (información)</option>
+            <option value="Modificación de modulo (ACL)">Modificación de módulo (ACL)</option>
+            <option value="Capacitación">Capacitación</option>
+            <option value="Error Sunat con ventas (Genérico)">Error Sunat con ventas (Genérico)</option>
+            <option value="Cambiar / Restablecer contraseña de usuario">Cambiar / Restablecer contraseña de usuario
+            </option>
+            <option value="Reporte falso">Reporte falso</option>
+            <option value="Reactivación/Suspensión del servicio">Reactivación/Suspensión del servicio</option>
+            <option value="Caída del sistema">Caída del sistema</option>
+            <option value="Cerrar sesión de forma remota">Cerrar sesión de forma remota</option>
+            <option value="Cambio de RUC">Cambio de RUC</option>
+            <option value="Crear NC Parcial">Crear NC Parcial</option>
+            <option value="Problemas con el update del APP">Problemas con el update del APP</option>
+            <option value="Sincronización de información/ventas offline">Sincronización de información/ventas offline
+            </option>
+            <option value="Solicitud de reporte de ventas">Solicitud de reporte de ventas</option>
+            <option value="Ventas validadas (No hay en consulta)">Ventas validadas (No hay en consulta)</option>
+            <option value="XML - CDR">XML - CDR</option>
+            <option value="Activar GDR">Activar GDR</option>
+            <option value="Otros">Otros</option>
+          </select>
+        </div>
+
+        <div class="newInput-container">
+          <label class="label-overlay">Modulo</label>
+          <select class="styled-input" name="module">
+            <option value="PRODUCTOS">PRODUCTOS</option>
+            <option value="CONFIGURACION">CONFIGURACION</option>
+            <option value="VENTAS">VENTAS</option>
+            <option value="COMPRAS">COMPRAS</option>
+            <option value="ECOMMERCE">ECOMMERCE</option>
+            <option value="CLIENTES">CLIENTES</option>
+            <option value="REPORTES">REPORTES</option>
+            <option value="INVENTARIOS">INVENTARIOS</option>
+            <option value="CAJA">CAJA</option>
+            <option value="CUENTAS BANCARIAS">CUENTAS BANCARIAS</option>
+            <option value="DASHBOARD">DASHBOARD</option>
+            <option value="EQUIPOS">EQUIPOS</option>
+            <option value="OTROS">OTROS</option>
+          </select>
+        </div>
+        <button type="submit" class="styled-input styled-accept" id="confirm-newAtention" disabled>Aceptar</button>
+        <button class="styled-input styled-cancel-popUp" id="newAtention-cancel">Cancelar</button>
+      </form>
+    </div>
+  </div>
+
+
+
+  <script>
+    const derivarButton = document.querySelectorAll('.derivar-button');
+    const derivarPopup = document.getElementById('derivar-popup');
+    const confirmDerivarButton = document.getElementById('confirm-derivar');
+    const derivarCancelButton = document.getElementById('derivar-cancel');
+    const detail_monthly_id = document.getElementById('detail_monthly_id');
+
+    derivarButton.forEach(button => {
+      button.addEventListener('click', () => {
+        derivarPopup.style.display = 'block';
+        const detailId = button.parentElement.parentElement.querySelector('td:nth-child(1)').textContent;
+        detail_monthly_id.value = detailId; // Asigna el valor del RUC a 'ruc_C' input
+        console.log('Valor del campo detail_monthly_id:', detail_monthly_id.value);
+      });
+    });
+
+    derivarCancelButton.addEventListener('click', () => {
+      event.preventDefault();
+      derivarPopup.style.display = 'none';
+    });
+  </script>
+
+  <script>
+    const callButton = document.querySelectorAll('.call-button');
+    const callPopup = document.getElementById('call-popup');
+    const confirmCallButton = document.getElementById('confirm-call');
+    const callCancelButton = document.getElementById('call-cancel');
+    const detail_Input = document.getElementById('detail_id');
+
+    callButton.forEach(button => {
+      button.addEventListener('click', () => {
+        callPopup.style.display = 'block';
+        const detail = button.parentElement.parentElement.querySelector('td:nth-child(1)').textContent;
+        detail_Input.value = detail;
+        console.log('Valor del campo detail_Input:', detail_Input.value);
+      });
+    });
+
+    callCancelButton.addEventListener('click', () => {
+      event.preventDefault();
+      callPopup.style.display = 'none';
+    });
+  </script>
+
+  <script>
+    const editButton = document.querySelectorAll('.edit-button');
+    const editPopup = document.getElementById('edit-popup');
+    const confirmEditButton = document.getElementById('confirm-edit');
+    const editCancelButton = document.getElementById('edit-cancel');
+    const detail_monthly = document.getElementById('detail_monthly');
+
+    editButton.forEach(button => {
+      button.addEventListener('click', () => {
+        editPopup.style.display = 'block';
+        const detailId = button.parentElement.parentElement.querySelector('td:nth-child(1)').textContent;
+        detail_monthly.value = detailId; // Asigna el valor del RUC a 'ruc_C' input
+        console.log('Valor del campo detail_monthly_id:', detail_monthly.value);
+      });
+    });
+
+    editCancelButton.addEventListener('click', () => {
+      event.preventDefault();
+      editPopup.style.display = 'none';
+    });
+  </script>
+
+  <script>
+    const activeButton = document.querySelectorAll('.active-button');
+    const activePopup = document.getElementById('active-popup');
+    const confirmActiveButton = document.getElementById('confirm-active');
+    const activeCancelButton = document.getElementById('active-cancel');
+    const detail_monthly_S = document.getElementById('detail_monthly_S');
+
+    activeButton.forEach(button => {
+      button.addEventListener('click', () => {
+        activePopup.style.display = 'block';
+        const detail_monthly_Aux = button.parentElement.parentElement.querySelector('td:nth-child(1)').textContent;
+        detail_monthly_S.value = detail_monthly_Aux; // Asigna el valor del RUC a 'ruc_C' input
+        console.log('Valor del campo id_followInput:', detail_monthly_S.value);
+      });
+    });
+
+    activeCancelButton.addEventListener('click', () => {
+      event.preventDefault();
+      activePopup.style.display = 'none';
+    });
+  </script>
+
+  <script>
+    const newAtentionButton = document.querySelectorAll('.newAtention');
+    const newAtentionPopup = document.getElementById('newAtention-popup');
+    const newAtentionCancelButton = document.getElementById('newAtention-cancel');
+
+    newAtentionButton.forEach(button => {
+      button.addEventListener('click', () => {
+        newAtentionPopup.style.display = 'block';
+      });
+    });
+
+    newAtentionCancelButton.addEventListener('click', () => {
+      event.preventDefault();
+      newAtentionPopup.style.display = 'none';
+    });
+
+
+
+    // Validar RUC
+    const ruc = document.getElementById('ruc_support');
+    const registrar_button = document.getElementById('confirm-newAtention');
+    const validationMessage = document.getElementById('ruc-validation-message');
+
+    ruc.addEventListener('input', validateForm);
+    let rucValid = false;
+
+    async function validateForm() {
+      const rucValue = ruc.value;
+
+      if (rucValue.length >= 11) {
+        const client_exists = await validar_client(rucValue);
+
+        if (client_exists) {
+          validationMessage.textContent = '';
+          validationMessage.style.paddingTop = '5px';
+          rucValid = true;
+          document.getElementById('ruc_support').addEventListener('change', consultarRuc);
+        } else {
+          validationMessage.textContent = 'No existe un cliente con el RUC ingresado*';
+          rucValid = false;
+        }
+      } else {
+        validationMessage.textContent = 'Longitud Mínima 11 caracteres*';
+        validationMessage.style.paddingTop = '5px';
+        rucValid = false;
+      }
+
+      registrar_button.disabled = !rucValid;
+      registrar_button.style.backgroundColor = rucValid ? 'rgba(37, 99, 235)' : '#ccc';
+    }
+
+    async function validar_client(ruc) {
+      try {
+        const response = await fetch(`/validar_client?ruc=${ruc}`);
+        const data = await response.json();
+        return data.exists;
+      } catch (error) {
+        console.error('Error during validation:', error);
+        return false; // Tratar el error como que el cliente no existe
+      }
+    }
+
+    function consultarRuc() {
+      var ruc = document.getElementById('ruc_support').value;
+      var contractNumberInput = document.getElementById('contract_number');
+
+      if (ruc.trim() !== '') {
+        fetch('/buscar_contrato?ruc=' + ruc)
+          .then(response => {
+            if (!response.ok) {
+              throw new Error('Network response was not ok');
+            }
+            return response.text();
+          })
+          .then(contratoEncontrado => {
+            if (contratoEncontrado.trim() !== '') {
+              contractNumberInput.value = contratoEncontrado;
+            }
+          })
+          .catch(error => {
+            console.error('Error during fetch:', error);
+            alert('Hubo un problema al realizar la consulta del RUC.');
+          });
+      }
+    }
+
+
+
+
+
+
+  </script>
+
+  {% include 'operaciones/footer.html' %}
+
+</body>
+
+</html>

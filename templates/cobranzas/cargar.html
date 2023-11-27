@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="icon" href="{{ url_for('static', filename='images/tandia_icon.png') }}" type="image/x-icon">
+  <title>CARGAR DATA</title>
+</head>
+
+<body>
+  {% include 'cobranzas/headerCollection.html' %}
+
+  <div class="header">
+    <!--<form id="search-form" method="POST" action="/follow_up">
+      <input type="text" id="search-input" name="ruc" placeholder="Buscar por RUC...">
+      <button type="submit">Buscar</button>
+    </form>-->
+    <p>Cargar nuevos clientes: </p>
+    <button class="buttom_header" type="button" id="uploadButton">Cargar Clientes</button>
+    <p>Cargar nuevas implementaciones: </p>
+    <button class="buttom_header" type="button" id="uploadImplementation">Cargar Implementaciones</button>
+    <p>Cargar nuevas compañias: </p>
+    <button class="buttom_header" type="button" id="uploadCompany">Cargar Nuevos Clientes</button>
+  </div>
+
+  <div id="uploadPopup" class="popup" style="display: none;">
+    <div class="popup-content">
+      <span class="close-button" id="close-upload-popup">&times;</span>
+      <h2>Cargar Nuevos Clientes</h2>
+
+      <!-- Form for uploading the Excel file -->
+      <form method="post" action="/upload_new_client" enctype="multipart/form-data">
+        <div class="input-container">
+          <label class="label-overlay" for="excelFile">Seleccionar archivo Excel</label>
+          <input class="styled-input" type="file" name="excelFile" id="excelFile" accept=".xls, .xlsx" required>
+        </div>
+
+        <button class="styled-input styled-button-popUp" type="submit" id="uploadFileButton">Cargar</button>
+      </form>
+    </div>
+  </div>
+
+  <div id="uploadImplementationPopUp" class="popup" style="display: none;">
+    <div class="popup-content">
+      <span class="close-button" id="close-upload-popup2">&times;</span>
+      <h2>Cargar Nuevas Implementaciones</h2>
+
+      <!-- Form for uploading the Excel file -->
+      <form method="post" action="/upload_new_implemetation" enctype="multipart/form-data">
+        <div class="input-container">
+          <label class="label-overlay" for="excelFile">Seleccionar archivo Excel</label>
+          <input class="styled-input" type="file" name="excelFile" id="excelFile" accept=".xls, .xlsx" required>
+        </div>
+
+        <button class="styled-input styled-button-popUp" type="submit" id="uploadFileButton">Cargar</button>
+      </form>
+    </div>
+  </div>
+
+  <div id="uploadCompanyPopUp" class="popup" style="display: none;">
+    <div class="popup-content">
+      <span class="close-button" id="close-upload-popup3">&times;</span>
+      <h2>Cargar Nuevos Clientes</h2>
+
+      <!-- Form for uploading the Excel file -->
+      <form method="post" action="/upload_new_Company" enctype="multipart/form-data">
+        <div class="input-container">
+          <label class="label-overlay" for="excelFile">Seleccionar archivo Excel</label>
+          <input class="styled-input" type="file" name="excelFile" id="excelFile" accept=".xls, .xlsx" required>
+        </div>
+
+        <button class="styled-input styled-button-popUp" type="submit" id="uploadFileButton">Cargar</button>
+      </form>
+    </div>
+  </div>
+
+  <script>
+    // ... (your existing code)
+
+    // Add a new event listener for the "Nuevo Seguimiento" button
+    const uploadCompany = document.getElementById('uploadCompany');
+    const uploadCompanyPopUp = document.getElementById('uploadCompanyPopUp');
+    const close_upload_popup3 = document.getElementById('close-upload-popup3');
+
+    uploadCompany.addEventListener('click', () => {
+      uploadCompanyPopUp.style.display = 'block';
+    });
+
+    close_upload_popup3.addEventListener('click', () => {
+      uploadCompanyPopUp.style.display = 'none';
+    });
+  </script>
+
+  <script>
+    // ... (your existing code)
+
+    // Add a new event listener for the "Nuevo Seguimiento" button
+    const uploadButton = document.getElementById('uploadButton');
+    const uploadPopup = document.getElementById('uploadPopup');
+    const closeUploadPopupButton = document.getElementById('close-upload-popup');
+
+    uploadButton.addEventListener('click', () => {
+      uploadPopup.style.display = 'block';
+    });
+
+    closeUploadPopupButton.addEventListener('click', () => {
+      uploadPopup.style.display = 'none';
+    });
+  </script>
+
+  <script>
+    // ... (your existing code)
+
+    // Add a new event listener for the "Nuevo Seguimiento" button
+    const uploadImplementation = document.getElementById('uploadImplementation');
+    const uploadImplementationPopUp = document.getElementById('uploadImplementationPopUp');
+    const close_upload_popup2 = document.getElementById('close-upload-popup2');
+
+    uploadImplementation.addEventListener('click', () => {
+      uploadImplementationPopUp.style.display = 'block';
+    });
+
+    close_upload_popup2.addEventListener('click', () => {
+      uploadImplementationPopUp.style.display = 'none';
+    });
+  </script>
+
+  {% include 'cobranzas/footer.html' %}
+
+</body>
+
+</html>

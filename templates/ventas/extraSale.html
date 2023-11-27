@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="icon" href="{{ url_for('static', filename='images/tandia_icon.png') }}" type="image/x-icon">
+  <title>Nuevo Extra</title>
+</head>
+
+<body>
+  {% include 'ventas/headerSale.html' %}
+
+  <div class="conteiner-new  conteiner-ex">
+
+    <form method="post" action="{{ url_for('ventas.extra_sale')}}" autocomplete="off">
+      <div class="inf-conteiner-newClient">
+
+        <div class="titulo-newCliente">
+          <p>Nuevo Extra</p>
+        </div>
+
+        <div class="conteiner-infoNewClient conteiner-infoNewClient-three">
+
+          <div class="newInput-container">
+            <label class="label-overlay">Motivo</label>
+            <select class="styled-input" name="amount_extra">
+              <option value="PAGO PENDIENTE DEL SISTEMA">PAGO PENDIENTE DEL SISTEMA</option>
+              <option value="UPGRADE">UPGRADE</option>
+              <option value="MODULO ADICIONAL">MODULO ADICIONAL</option>
+              <option value="USUARIO ADICIONAL">USUARIO ADICIONAL</option>
+              <option value="TIENDA ADICIONAL">TIENDA ADICIONAL</option>
+              <option value="RUC ADICIONAL">RUC ADICIONAL</option>
+            </select>
+          </div>
+
+          <div class="newInput-container">
+            <label class="label-overlay">Ruc</label>
+            <input class="styled-input" type="text" id="ruc_extra" name="ruc_extra" placeholder="Ruc" required>
+          </div>
+
+          <div class="newInput-container">
+            <label class="label-overlay">Contrato</label>
+            <input class="styled-input" type="text" id="contract_extra" name="contract_extra" placeholder="Contrato"
+              required>
+          </div>
+
+          <div class="newInput-container">
+            <label class="label-overlay">Monto</label>
+            <input class="styled-input" type="text" id="amount_extra" name="amount_extra" placeholder="S/0.00" required>
+          </div>
+
+          <div class="newInput-container">
+            <label class="label-overlay">Nro Factura</label>
+            <input class="styled-input" type="text" id="nro_fac_extra" name="nro_fac_extra" placeholder="Nro Factura"
+              required>
+          </div>
+
+          <div class="newInput-container">
+            <label class="label-overlay">Fecha de Pago</label>
+            <input class="styled-input" type="date" id="pay_day_extra" name="pay_day_extra" required>
+          </div>
+
+          <div class="newInput-container">
+            <label class="label-overlay">Nro de Documento</label>
+            <input class="styled-input" type="text" id="nro_doc_extra" name="nro_doc_extra"
+              placeholder="Nro de Documento" required>
+          </div>
+
+          <div class="newInput-container">
+            <label class="label-overlay">Nombre Del Cliente</label>
+            <input class="styled-input" type="text" id="name_extra" name="name_extra" placeholder="Nombre Del Cliente"
+              required>
+          </div>
+
+          <div class="newInput-container">
+            <label class="label-overlay">Numero del Cliente</label>
+            <input class="styled-input" type="text" id="num_client_extra" name="num_client_extra"
+              placeholder="Numero del Cliente" required>
+          </div>
+
+          <div class="newInput-container">
+            <label class="label-overlay">Tipo de Extra</label>
+            <select class="styled-input" name="type_extra">
+              <option value="SISTEMA">SISTEMA</option>
+              <option value="OTROS">OTROS</option>
+            </select>
+          </div>
+
+          <div class="newInput-containerSup">
+            <div class="newInput-container">
+              <label class="label-overlay">Comentarios Adicionales</label>
+              <input class="styled-input" type="text" id="commentry_extra" name="commentry_extra"
+                placeholder="Registre Comentario" required>
+            </div>
+          </div>
+
+        </div>
+
+        <div class="conteiner-infoNewClient conteiner-infoNewClient-five">
+          <div class="button-Colum3">
+            <button class="styled-input styled-button" type="submit">Registrar Extra</button>
+          </div>
+        </div>
+
+      </div>
+
+    </form>
+
+  </div>
+
+  {% include 'ventas/footer.html' %}
+</body>
+
+</html>

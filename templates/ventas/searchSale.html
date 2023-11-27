@@ -1,0 +1,279 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="icon" href="{{ url_for('static', filename='images/tandia_icon.png') }}" type="image/x-icon">
+  <title>Buscar Contrato</title>
+</head>
+
+<body>
+  {% include 'ventas/headerSale.html' %}
+
+  <div class="header">
+    <form id="search-form" method="POST" action="/searchSale">
+      <input type="text" id="search-input" name="contract_number" placeholder="Buscar por Contrato...">
+      <button type="submit">Buscar</button>
+    </form>
+  </div>
+
+  {% if cliente%}
+  <div class="sup-conteiner-infoClient">
+    <div class="inf-conteiner-infoClient">
+      <div class="titulo">
+        <p>Datos del Cliente</p>
+      </div>
+      <div class="conteiner-infoClient">
+        <div class="input-container">
+          <label class="label-overlay">Ruc</label>
+          <span class="styled-input">{{cliente[0].0}}</span>
+        </div>
+        <div class="input-container">
+          <label class="label-overlay">Razón Social</label>
+          <span class="styled-input">{{cliente[0].1}}</span>
+        </div>
+        <div class="input-container">
+          <label class="label-overlay">Nombre Comercial</label>
+          <span class="styled-input">{{cliente[0].2}}</span>
+        </div>
+        <div class="input-container">
+          <label class="label-overlay">Representante Legal</label>
+          <span class="styled-input">{{cliente[0].3}}</span>
+        </div>
+        <div class="input-container">
+          <label class="label-overlay">Nro de Documento</label>
+          <span class="styled-input">{{cliente[0].4}}</span>
+        </div>
+        <div class="input-container">
+          <label class="label-overlay">Dirección Fiscal</label>
+          <span class="styled-input">{{cliente[0].5}}</span>
+        </div>
+        <div class="input-container">
+          <label class="label-overlay">Departamento</label>
+          <span class="styled-input">{{cliente[0].6}}</span>
+        </div>
+        <div class="input-container">
+          <label class="label-overlay">Rubro</label>
+          <span class="styled-input">{{cliente[0].7}}</span>
+        </div>
+        <div class="input-container">
+          <label class="label-overlay">Nombre del Cliente</label>
+          <span class="styled-input">{{cliente[0].8}}</span>
+        </div>
+        <div class="input-container">
+          <label class="label-overlay">Correo del Cliente</label>
+          <span class="styled-input">{{cliente[0].9}}</span>
+        </div>
+        <div class="input-container">
+          <label class="label-overlay">Numero del Cliente</label>
+          <span class="styled-input">+51 {{cliente[0].10}}</span>
+        </div>
+
+        {% if cliente[0].11 != '' %}
+        <div class="input-container">
+          <label class="label-overlay">Nombre del Encargado de Implementación</label>
+          <span class="styled-input">{{cliente[0].11}}</span>
+        </div>
+        <div class="input-container">
+          <label class="label-overlay">Correo del Encargado de Implementación</label>
+          <span class="styled-input">{{cliente[0].12}}</span>
+        </div>
+        <div class="input-container">
+          <label class="label-overlay">Numero del Encargado de Implementación</label>
+          <span class="styled-input">{{cliente[0].13}}</span>
+        </div>
+        {% endif%}
+      </div>
+    </div>
+
+    <div class="inf-conteiner-infoClient">
+      <div class="titulo">
+        <p>Datos del Contrato</p>
+      </div>
+      <div class="conteiner-infoClient">
+        <div class="input-container">
+          <label class="label-overlay">Nro de Contrato</label>
+          <span class="styled-input">{{cliente[0].14}}</span>
+        </div>
+        <div class="input-container">
+          <label class="label-overlay">Plan</label>
+          <span class="styled-input">{{cliente[0].15}}</span>
+        </div>
+        <div class="input-container">
+          <label class="label-overlay">Tipo de Contrato</label>
+          <span class="styled-input">{{cliente[0].16}}</span>
+        </div>
+        <div class="input-container">
+          <label class="label-overlay">Tiendas</label>
+          <span class="styled-input">{{cliente[0].17}}</span>
+        </div>
+        <div class="input-container">
+          <label class="label-overlay">Usuarios</label>
+          <span class="styled-input">{{cliente[0].18}}</span>
+        </div>
+        <div class="input-container">
+          <label class="label-overlay">Monto Inicial del Plan</label>
+          <span class="styled-input">{{cliente[0].19}}</span>
+        </div>
+        <div class="input-container">
+          <label class="label-overlay">Monto a Renovar</label>
+          <span class="styled-input">{{cliente[0].20}}</span>
+        </div>
+        <div class="input-container input-container2">
+          <label class="label-overlay">Inicio</label>
+          <span class="styled-input">{{cliente[0].21}}</span>
+        </div>
+        <div class="input-container input-container2">
+          <label class="label-overlay">Fin</label>
+          <span class="styled-input">{{cliente[0].22}}</span>
+        </div>
+        <div class="input-container input-container2">
+          <label class="label-overlay">FE</label>
+          <span class="styled-input">
+            {% if cliente[0].23 == 1 %}
+            Sí
+            {% else %}
+            No
+            {% endif %}
+          </span>
+        </div>
+
+        <div class="input-container input-container2">
+          <label class="label-overlay">Guias de Remisión</label>
+          <span class="styled-input">
+            {% if cliente[0].24 == 1 %}
+            Sí
+            {% else %}
+            No
+            {% endif %}
+          </span>
+        </div>
+
+
+        <div class="input-container input-container2">
+          <label class="label-overlay">Debe</label>
+          <span class="styled-input">{{cliente[0].25}}</span>
+        </div>
+        <div class="input-container input-container2">
+          <label class="label-overlay">Contrato</label>
+          <button class="styled-input" type="submit" id="submit_implementation" disabled><a href="{{cliente[0].26}}"
+              target="_blank">Descargar</a></button>
+        </div>
+
+
+      </div>
+    </div>
+
+    <div class="inf-conteiner-infoClient">
+      <div class="titulo">
+        <p>Datos de la Compañia</p>
+      </div>
+      <div class="conteiner-infoClient">
+        <div class="input-container">
+          <label class="label-overlay">Correo de Soporte</label>
+          <span class="styled-input">{{cliente[0].27}}</span>
+        </div>
+        <div class="input-container">
+          <label class="label-overlay">Contraseña de soporte</label>
+          <span class="styled-input">{{cliente[0].28}}</span>
+        </div>
+        <div class="input-container">
+          <label class="label-overlay">Dirección Fiscal</label>
+          <span class="styled-input">{{cliente[0].29}}</span>
+        </div>
+        <div class="input-container">
+          <label class="label-overlay">Telefono</label>
+          <span class="styled-input">{{cliente[0].30}}</span>
+        </div>
+        <div class="input-container">
+          <label class="label-overlay">Correo</label>
+          <span class="styled-input">{{cliente[0].31}}</span>
+        </div>
+        <div class="input-container">
+          <label class="label-overlay">Tipo de Impuesto</label>
+          <span class="styled-input">{{cliente[0].32}}</span>
+        </div>
+        <div class="input-container">
+          <label class="label-overlay">Certificado Digital</label>
+          <button class="styled-input" type="submit" id="submit_implementation" disabled><a href="{{cliente[0].33}}"
+            target="_blank">Descargar</a></button>
+        </div>
+        <div class="input-container">
+          <label class="label-overlay">Contraseña Certificado</label>
+          <span class="styled-input">{{cliente[0].34}}</span>
+        </div>
+        <div class="input-container">
+          <label class="label-overlay">Vencimiento CD</label>
+          <span class="styled-input">{{cliente[0].35}}</span>
+        </div>
+        {% if cliente[0].24 == True %}
+        <div class="input-container">
+          <label class="label-overlay">Clave Guias de Remision</label>
+          <span class="styled-input">{{cliente[0].36}}</span>
+        </div>
+        <div class="input-container">
+          <label class="label-overlay">Id Clave Guias de Remision</label>
+          <span class="styled-input">{{cliente[0].37}}</span>
+        </div>
+        {% endif %}
+        {% if cliente[0].38 == True %}
+        <div class="input-container">
+          <label class="label-overlay">Clave Sol</label>
+          <span class="styled-input">{{cliente[0].39}}</span>
+        </div>
+        <div class="input-container">
+          <label class="label-overlay">Contraseña Clave Sol</label>
+          <span class="styled-input">{{cliente[0].40}}</span>
+        </div>
+        {% endif %}
+      </div>
+    </div>
+
+    <div class="inf-conteiner-infoClient">
+      <div class="titulo">
+        <p>Datos del Asesor</p>
+      </div>
+      <div class="conteiner-infoClient conteiner-infoClient2">
+        <div class="input-container">
+          <label class="label-overlay">Area</label>
+          <span class="styled-input">{{cliente[0].41}}</span>
+        </div>
+        <div class="input-container">
+          <label class="label-overlay">Ejecutivo Comercial</label>
+          <span class="styled-input">{{cliente[0].42}}</span>
+        </div>
+        <div class="input-container">
+          <label class="label-overlay">Nro Ejecutivo</label>
+          <span class="styled-input">+51 {{cliente[0].43}}</span>
+        </div>
+      </div>
+      <div class="titulo">
+        <p>Datos del Asesor</p>
+      </div>
+      <div class="conteiner-infoClient conteiner-infoClient2">
+        <div class="input-container">
+          <label class="label-overlay">Equipo</label>
+          <span class="styled-input">---</span>
+        </div>
+        <div class="input-container">
+          <label class="label-overlay">Fecha</label>
+          <span class="styled-input">---</span>
+        </div>
+        <div class="input-container">
+          <label class="label-overlay">Estado</label>
+          <span class="styled-input">---</span>
+        </div>
+      </div>
+    </div>
+  </div>
+  {% else %}
+  <p class="none_result">No se encontraron resultados  :(</p>
+  {% endif %}
+
+
+
+  {% include 'ventas/footer.html' %}
+</body>
+
+</html>

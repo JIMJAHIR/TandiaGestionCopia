@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8"> 
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="icon" href="{{ url_for('static', filename='images/tandia_icon.png') }}" type="image/x-icon">
+  <title>Seguimiento Cobranza</title>
+</head>
+
+<body>
+  {% include 'cobranzas/headerCollection.html' %}
+
+
+
+  <div class="conteiner-detail">
+
+    {% for detail in detail %}
+
+    <div>
+
+      <div class="titulo-detail">
+        <p>Información del Cliente</p>
+      </div>
+
+      <div class="section-detail">
+        <div class="section-detail_title">Contrato:</div>
+        <div class="section-detail_info">{{ detail[9] }}</div>
+      </div>
+
+      <div class="section-detail">
+        <div class="section-detail_title">Ruc:</div>
+        <div class="section-detail_info">{{ detail[2] }}</div>
+      </div>
+
+      <div class="section-detail">
+        <div class="section-detail_title">Promocion:</div>
+        <div class="section-detail_info">{{ detail[3] }}</div>
+      </div>
+
+      <div class="section-detail">
+        <div class="section-detail_title">Estado:</div>
+        <div class="section-detail_info">{{ detail[4] }}</div>
+      </div>
+
+      <div class="section-detail">
+        <div class="section-detail_title">Comentario:</div>
+        <div class="section-detail_info">{{ detail[5] }}</div>
+      </div>
+
+
+    </div>
+    {% endfor %}
+
+    <div class="titulo-detail">
+      <p>Registro de Contactos</p>
+    </div>
+
+    {% for contact in contact %}
+
+    <div>
+
+      <div class="section-detail">
+        <div class="section-detail_title">Tipo de Contacto:</div>
+        <div class="section-detail_info">{{ contact[9] }}</div>
+      </div>
+
+      <div class="section-detail">
+        <div class="section-detail_title">Fecha y Hora:</div>
+        <div class="section-detail_info">{{ contact[11] }}</div>
+      </div>
+
+      <div class="section-detail">
+        <div class="section-detail_title">Comentario:</div>
+        <div class="section-detail_info">{{ contact[10] }}</div>
+      </div>
+
+    </div>
+
+    {% endfor %}
+
+  </div>
+
+
+
+
+  {% include 'cobranzas/footer.html' %}
+ 
+</body>
+
+</html>

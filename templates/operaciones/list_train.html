@@ -1,0 +1,259 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="icon" href="{{ url_for('static', filename='images/tandia_icon.png') }}" type="image/x-icon">
+  <title>Capacitaciones</title>
+</head>
+
+<body>
+  {% include 'operaciones/headerSupport.html' %}
+
+  <div class="header">
+    <!--<form id="search-form" method="POST" action="/follow_up">
+      <input type="text" id="search-input" name="ruc" placeholder="Buscar por RUC...">
+      <button type="submit">Buscar</button>
+    </form>-->
+    <button type="button" class="buttom_header newTrain" id="newTrain">Agendar Capacitación</button>
+  </div>
+
+  <div class="table-container">
+
+    <table class="clientes">
+      <thead>
+        <tr>
+          <th style="display:none;">ID</th>
+          <th>RUC</th>
+          <th>CONTRATO</th>
+          <th>RESPONSABLE</th>
+          <th>ENLACE</th>
+          <th>DÍA</th>
+          <th>HORA</th>
+          <th>ESTADO</th>
+        </tr>
+      </thead>
+      <tbody>
+
+        {% for train in list_train|sort(reverse=True, attribute='6') %}
+        <tr>
+          <td style="display:none;">{{ train[0] }}</td>
+          <td>{{ train[3] }}</td>
+          <td>{{ train[4] }}</td>
+          <td>{{ train[12] }}</td>
+          <td><a href="{{train[5]}}" target="_blank"> Ir... </a> </td>
+          <td>{{ train[6] }}</td>
+          <td>{{ train[7] }}</td>
+
+          {% if train[8] == 'AGENDADA' %}
+          <td><a class="act-button orange-proces"> AGENDADA </a></td>
+          {% elif train[8] == 'NO REALIZADA' %}
+          <td><a class="red-false"> NO REALIZADA </a></td>
+          {% else %}
+          <td class="green-true"> FINALIZADO </td>
+          {% endif %}
+
+
+
+
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+    <div class="pagination">
+      <button id="prevPage"><i class="fa-solid fa-backward"></i></button>
+      <button id="prevPageNumber">0</button>
+      <button id="currentPage">1</button>
+      <button id="nextPageNumber">2</button>
+      <button id="nextPage"><i class="fa-solid fa-forward"></i></button>
+    </div>
+  </div>
+
+  <div id="act-popup" class="popup">
+    <div class="popup-content">
+      <h2>Confirmación</h2>
+      <p>¿CAPACITACION REALIZADA</p>
+
+      <form method="post" action="/acceptTrain" autocomplete="off">
+        <input type="hidden" id="ruc" name="ruc" value="">
+        <input type="hidden" id="train_id" name="train_id" value="">
+
+        <div class="radio">
+          <label for="activo_si">
+            <input type="radio" id="activo_si" name="activo" value="SI" required> Sí
+          </label>
+          <label for="activo_no">
+            <input type="radio" id="activo_no" name="activo" value="NO" required> No
+          </label>
+        </div>
+
+        <button type="submit" class="styled-input styled-accept-popUp" id="confirm-accept">Aceptar</button>
+        <button class="styled-input styled-cancel-popUp" id="confirm-cancel">Cancelar</button>
+      </form>
+    </div>
+  </div>
+
+  <div id="popup" class="popup">
+    <div class="popup-content">
+      <span class="close-button" id="close-popup">&times;</span>
+      <h2>Agendar Capacitación</h2>
+
+      <form method="post" action="/newTrain" autocomplete="off">
+
+        <div class="input-container">
+          <label class="label-overlay" for="rucN">Ruc</label>
+          <input class="styled-input" type="text" name="rucN" id="rucN" required>
+          <span class="ruc-validation-message" id="ruc-validation-message"></span>
+
+        </div>
+        <div class="input-container">
+          <label class="label-overlay" for="contract_number">Contrato</label>
+          <input class="styled-input" type="text" name="contract_number" id="contract_number" required>
+        </div>
+        <div class="input-container">
+          <label class="label-overlay" for="url_train">Enlace Capacitación</label>
+          <input class="styled-input" type="text" name="url_train" id="url_train" required>
+        </div>
+        <div class="input-container input-container2">
+          <label class="label-overlay" for="date_train">Fecha</label>
+          <input class="styled-input" type="date" name="date_train" id="date_train" required>
+        </div>
+
+        <div class="newInput-container input-container2">
+          <label class="label-overlay" for="hour_train">Hora</label>
+          <select class="styled-input" name="hour_train" id="hour_train">
+            <option value="11:00:00">11:00 am</option>
+            <option value="16:00:00">04:00 pm</option>
+          </select>
+        </div>
+
+        <div class="input-container">
+          <label class="label-overlay" for="user_id_resp">Responsable</label>
+          <select class="styled-input" name="user_id_resp" id="user_id_resp">
+            {% for user in users %}
+            <option value="{{user.0}}">{{user.3}}</option>
+            {% endfor %}
+          </select>
+        </div>
+        <button class="styled-input styled-button_imp" type="submit" id="registrar-button" disabled>Registrar</button>
+
+      </form>
+    </div>
+  </div>
+
+
+  <script>
+    const actButton = document.querySelectorAll('.act-button');
+    const actPopup = document.getElementById('act-popup');
+    const confirmAcceptButton = document.getElementById('confirm-accept');
+    const confirmCancelButton = document.getElementById('confirm-cancel');
+    const trainIdInput = document.getElementById('train_id');
+    const rucInput = document.getElementById('rucN');
+
+    actButton.forEach(button => {
+      button.addEventListener('click', () => {
+        actPopup.style.display = 'block';
+        const id = button.parentElement.parentElement.querySelector('td:nth-child(1)').textContent;
+        trainIdInput.value = id;
+        const ruc = button.parentElement.parentElement.querySelector('td:nth-child(2)').textContent;
+        rucInput.value = ruc;
+        console.log('Valor del campo ID:', trainIdInput.value);
+        console.log('Valor del campo ruc:', rucInput.value);
+      });
+    });
+
+    confirmCancelButton.addEventListener('click', () => {
+      event.preventDefault();
+      actPopup.style.display = 'none';
+    });
+
+    // Validar RUC
+    const ruc = document.getElementById('rucN');
+    const registrar_button = document.getElementById('registrar-button');
+    const validationMessage = document.getElementById('ruc-validation-message');
+
+    ruc.addEventListener('input', validateForm);
+    let rucValid = false;
+
+    async function validateForm() {
+      const rucValue = ruc.value;
+
+      if (rucValue.length >= 11) {
+        const client_exists = await validar_client(rucValue);
+
+        if (client_exists) {
+          validationMessage.textContent = '';
+          validationMessage.style.paddingTop = '5px';
+          rucValid = true;
+          document.getElementById('rucN').addEventListener('change', consultarRuc);
+        } else {
+          validationMessage.textContent = 'No existe un cliente con el RUC ingresado*';
+          rucValid = false;
+        }
+      } else {
+        validationMessage.textContent = 'Longitud Mínima 11 caracteres*';
+        validationMessage.style.paddingTop = '5px';
+        rucValid = false;
+      }
+
+      registrar_button.disabled = !rucValid;
+      registrar_button.style.backgroundColor = rucValid ? 'rgba(37, 99, 235)' : '#ccc';
+    }
+
+    async function validar_client(ruc) {
+      try {
+        const response = await fetch(`/validar_client?ruc=${ruc}`);
+        const data = await response.json();
+        return data.exists;
+      } catch (error) {
+        console.error('Error during validation:', error);
+        return false; // Tratar el error como que el cliente no existe
+      }
+    }
+
+    function consultarRuc() {
+      var ruc = document.getElementById('rucN').value;
+      var contractNumberInput = document.getElementById('contract_number');
+
+      if (ruc.trim() !== '') {
+        fetch('/buscar_contrato?ruc=' + ruc)
+          .then(response => {
+            if (!response.ok) {
+              throw new Error('Network response was not ok');
+            }
+            return response.text();
+          })
+          .then(contratoEncontrado => {
+            if (contratoEncontrado.trim() !== '') {
+              contractNumberInput.value = contratoEncontrado;
+            }
+          })
+          .catch(error => {
+            console.error('Error during fetch:', error);
+            alert('Hubo un problema al realizar la consulta del RUC.');
+          });
+      }
+    }
+  </script>
+
+  <script>
+    const registrarButtons = document.querySelectorAll('.newTrain'); // Selecciona los botones con la clase registrar-button
+    const popup = document.getElementById('popup');
+    const closePopupButton = document.getElementById('close-popup');
+
+    registrarButtons.forEach((button, index) => {
+      button.addEventListener('click', () => {
+        popup.style.display = 'block';
+      });
+    });
+
+    closePopupButton.addEventListener('click', () => {
+      popup.style.display = 'none';
+    });
+  </script>
+
+  {% include 'operaciones/footer.html' %}
+</body>
+
+</html>

@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="icon" href="{{ url_for('static', filename='images/tandia_icon.png') }}" type="image/x-icon">
+  <title>Seguimiento Inactivos</title>
+</head>
+
+<body>
+  {% include 'cobranzas/headerCollection.html' %}
+
+  <div class="header">
+    <!--<form id="search-form" method="POST" action="/follow_up">
+      <input type="text" id="search-input" name="ruc" placeholder="Buscar por RUC...">
+      <button type="submit">Buscar</button>
+    </form>-->
+    <button class="buttom_header" type="button" id="uploadButton">Nueva Cobranza</button>
+  </div>
+
+  <div class="table-container">
+    <table class="clientes">
+      <thead>
+        <tr>
+          <th>Id</th>
+          <th>Fecha</th>
+          <th>Generado Por</th>
+          <th>Estado</th>
+          <th>Acciones</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for collection in list_collection|sort(reverse=True, attribute='2') %}
+
+
+        <tr>
+          <td>{{ collection[0] }}</td>
+          <td>{{ collection[2] }}</td>
+          <td>{{ collection[7] }}</td>
+
+          {% if collection[3] == 'EN PROCESO' %}
+          <td><a class="orange-proces"> EN PROCESO </a></td>
+          {% else %}
+          <td class="green-true"> FINALIZADO </td>
+          {% endif %}
+
+
+          <th><a href="{{ url_for('cobranzas.detailCollection', collection=collection[0]) }}" target="_blank"><i
+                class="fa-solid fa-circle-info"></i>
+              <a class="active-button"><i class="fa-solid fa-check"></i></a></th>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+    <div class="pagination">
+      <button id="prevPage"><i class="fa-solid fa-backward"></i></button>
+      <button id="prevPageNumber">0</button>
+      <button id="currentPage">1</button>
+      <button id="nextPageNumber">2</button>
+      <button id="nextPage"><i class="fa-solid fa-forward"></i></button>
+    </div>
+  </div>
+
+  <div id="uploadPopup" class="popup" style="display: none;">
+    <div class="popup-content">
+      <span class="close-button" id="close-upload-popup">&times;</span>
+      <h2>Cargar Archivo Excel</h2>
+
+      <!-- Form for uploading the Excel file -->
+      <form method="post" action="/upload_collection_monthly" enctype="multipart/form-data">
+        <div class="input-container">
+          <label class="label-overlay" for="excelFile">Seleccionar archivo Excel</label>
+          <input class="styled-input" type="file" name="excelFile" id="excelFile" accept=".xls, .xlsx" required>
+        </div>
+
+        <button class="styled-input styled-button-popUp" type="submit" id="uploadFileButton">Cargar</button>
+      </form>
+    </div>
+  </div>
+
+  <div id="active-popup" class="popup">
+    <div class="popup-content">
+      <h2>Confirmación</h2>
+      <p>Finalizar Cobranzas</p>
+
+      <form method="post" action="/endCollection" autocomplete="off">
+        <input type="hidden" id="id_collection_A" name="id_collection_A" value="">
+        <button type="submit" class="styled-input styled-accept-popUp" id="confirm-active">Aceptar</button>
+        <button class="styled-input styled-cancel-popUp" id="active-cancel">Cancelar</button>
+      </form>
+    </div>
+  </div>
+
+  
+
+  <script>
+    // ... (your existing code)
+
+    // Add a new event listener for the "Nuevo Seguimiento" button
+    const uploadButton = document.getElementById('uploadButton');
+    const uploadPopup = document.getElementById('uploadPopup');
+    const closeUploadPopupButton = document.getElementById('close-upload-popup');
+
+    uploadButton.addEventListener('click', () => {
+      uploadPopup.style.display = 'block';
+    });
+
+    closeUploadPopupButton.addEventListener('click', () => {
+      uploadPopup.style.display = 'none';
+    });
+  </script>
+
+<script>
+  const activeButton = document.querySelectorAll('.active-button');
+  const activePopup = document.getElementById('active-popup');
+  const confirmActiveButton = document.getElementById('confirm-active');
+  const activeCancelButton = document.getElementById('active-cancel');
+  const id_collectionInput = document.getElementById('id_collection_A');
+
+  activeButton.forEach(button => {
+    button.addEventListener('click', () => {
+      activePopup.style.display = 'block';
+      const id_collection = button.parentElement.parentElement.querySelector('td:nth-child(1)').textContent;
+      id_collectionInput.value = id_collection; // Asigna el valor del RUC a 'ruc_C' input
+      console.log('Valor del campo id_collectionInput:', id_collectionInput.value);
+    });
+  });
+
+  activeCancelButton.addEventListener('click', () => {
+    event.preventDefault();
+    activePopup.style.display = 'none';
+  });
+</script>
+
+  {% include 'cobranzas/footer.html' %}
+
+</body>
+
+</html>

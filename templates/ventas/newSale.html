@@ -1,0 +1,351 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="icon" href="{{ url_for('static', filename='images/tandia_icon.png') }}" type="image/x-icon">
+  <title>Nuevo Cliente</title>
+</head>
+
+<body>
+  {% include 'ventas/headerSale.html' %}
+
+  <div class="conteiner-new">
+
+    <form method="post" action="{{ url_for('ventas.newClient')}}" autocomplete="off">
+      <div class="inf-conteiner-newClient">
+
+        <div class="titulo-newCliente">
+          <p>Información del Cliente</p>
+        </div>
+
+        <div class="conteiner-infoNewClient">
+
+          <div class="newInput-container">
+            <label class="label-overlay">Tipo de Cierre</label>
+            <select class="styled-input" name="closure_type">
+              <option value="REMOTO">REMOTO</option>
+              <option value="CAMPO">CAMPO</option>
+            </select>
+          </div>
+
+          <div class="newInput-container">
+            <label class="label-overlay">Ruc</label>
+            <input class="styled-input" type="text" id="ruc" name="ruc" required
+              oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1');">
+            <span class="ruc-validation-message" id="ruc-validation-message"></span>
+          </div>
+
+          <div class="newInput-container">
+            <label class="label-overlay">Razón Social</label>
+            <input class="styled-input" type="text" id="social_name" name="social_name" required>
+          </div>
+
+          <div class="newInput-container">
+            <label class="label-overlay">Rubro</label>
+            <select class="styled-input" name="business_line">
+              <option value="MARKET">MARKET</option>
+              <option value="FERRETERIA">FERRETERIA</option>
+              <option value="FARMACIA">FARMACIA</option>
+              <option value="RESTAURANTE">RESTAURANTE</option>
+              <option value="LIBRERÍA">LIBRERÍA</option>
+              <option value="PANADERÍA">PANADERÍA</option>
+              <option value="SERVICIOS VARIOS">SERVICIOS VARIOS</option>
+              <option value="OTROS">OTROS</option>
+            </select>
+          </div>
+
+          <div class="newInput-container">
+            <label class="label-overlay">Nro de Documento</label>
+            <input class="styled-input" type="text" id="doc_number" name="doc_number" required
+              oninput="this.value = this.value.replace(/[^0-9]/g, '')">
+          </div>
+
+          <div class="newInput-container">
+            <label class="label-overlay">Representante Legal</label>
+            <input class="styled-input" type="text" id="legal_representative" name="legal_representative" required>
+          </div>
+
+          <div class="newInput-container">
+            <label class="label-overlay">Departamento</label>
+            <select class="styled-input" name="department">
+              <option value="AMAZONAS">AMAZONAS</option>
+              <option value="ANCASH">ANCASH</option>
+              <option value="APURIMAC">APURIMAC</option>
+              <option value="AREQUIPA">AREQUIPA</option>
+              <option value="AYACUCHO">AYACUCHO</option>
+              <option value="CAJAMARCA">CAJAMARCA</option>
+              <option value="CALLAO">CALLAO</option>
+              <option value="CUSCO">CUSCO</option>
+              <option value="HUANCAVELICA">HUANCAVELICA</option>
+              <option value="HUANUCO">HUANUCO</option>
+              <option value="ICA">ICA</option>
+              <option value="JUNIN">JUNIN</option>
+              <option value="LA LIBERTAD">LA LIBERTAD</option>
+              <option value="LAMBAYEQUE">LAMBAYEQUE</option>
+              <option value="LIMA">LIMA</option>
+              <option value="LORETO">LORETO</option>
+              <option value="MADRE DE DIOS">MADRE DE DIOS</option>
+              <option value="MOQUEGUA">MOQUEGUA</option>
+              <option value="PASCO">PASCO</option>
+              <option value="PIURA">PIURA</option>
+              <option value="PUNO">PUNO</option>
+              <option value="SAN MARTIN">SAN MARTIN</option>
+              <option value="TACNA">TACNA</option>
+              <option value="TUMBES">TUMBES</option>
+              <option value="UCAYALI">UCAYALI</option>
+            </select>
+          </div>
+
+          <div class="newInput-container">
+            <label class="label-overlay">Dirección Fiscal</label>
+            <input class="styled-input" type="text" id="tax_address" name="tax_address" required>
+          </div>
+
+          <div class="newInput-container">
+            <label class="label-overlay">Nombre del Cliente</label>
+            <input class="styled-input" type="text" id="client_name" name="client_name" required>
+          </div>
+
+          <div class="newInput-container">
+            <label class="label-overlay">Correo del Cliente</label>
+            <input class="styled-input" type="email" id="client_email" name="client_email" required>
+          </div>
+
+          <div class="newInput-container">
+            <label class="label-overlay">Numero del Cliente</label>
+            <input class="styled-input" type="text" id="client_phone" name="client_phone" required
+              oninput="this.value = this.value.replace(/[^0-9]/g, '')">
+          </div>
+
+          <div class="newInput-container">
+            <label class="label-overlay">Implementador</label>
+            <span class="styled-input">¿Implementador es el cliente?<input class="checkbox" type="checkbox"
+                id="implementadorCheckbox" name="implementadorCheckbox" onchange="habilitarSeccionesImp()" /><label
+                class="label-checkbox" for="implementadorCheckbox">Toggle</label></span>
+          </div>
+
+          <div class="seccion-implementador" style="display: none;">
+            <div class="newInput-container">
+              <label class="label-overlay">Nombre del Implementador</label>
+              <input class="styled-input" type="text" id="implementor_name" name="implementor_name">
+            </div>
+          </div>
+
+          <div class="seccion-implementador" style="display: none;">
+            <div class="newInput-container">
+              <label class="label-overlay">Correo del Implementador</label>
+              <input class="styled-input" type="email" id="implementor_email" name="implementor_email">
+            </div>
+          </div>
+
+          <div class="seccion-implementador" style="display: none;">
+            <div class="newInput-container">
+              <label class="label-overlay">Numero del Implementador</label>
+              <input class="styled-input" type="text" id="implementor_phone" name="implementor_phone"
+                oninput="this.value = this.value.replace(/[^0-9]/g, '')">
+            </div>
+          </div>
+
+        </div>
+
+        <div class="titulo-newCliente">
+          <p>Información del Plan</p>
+        </div>
+
+        <div class="conteiner-infoNewClient conteiner-infoNewClient-five">
+
+          <div class="newInput-container">
+            <label class="label-overlay">Tipo de Plan</label>
+            <select class="styled-input" name="plan">
+              <option value="PLAN FULL">PLAN FULL</option>
+              <option value="PLAN PYME">PLAN PYME</option>
+              <option value="PLAN FACTURADOR">PLAN FACTURADOR</option>
+            </select>
+          </div>
+
+          <div class="newInput-container">
+            <label class="label-overlay">Vigencia</label>
+            <select class="styled-input" name="contract_type">
+              <option value="ANUAL">ANUAL</option>
+              <option value="SEMESTRAL">SEMESTRAL</option>
+              <option value="TRIMESTRAL">TRIMESTRAL</option>
+              <option value="MENSUAL">MENSUAL</option>
+            </select>
+          </div>
+
+          <div class="newInput-container">
+            <label class="label-overlay">Nro de Tiendas</label>
+            <select class="styled-input" name="stores_number">
+              <option value="1">1 TIENDA</option>
+              <option value="2">2 TIENDAS</option>
+              <option value="3">3 TIENDAS</option>
+            </select>
+          </div>
+
+          <div class="newInput-container">
+            <label class="label-overlay">Nro Usuarios</label>
+            <select class="styled-input" name="users_number">
+              <option value="2">2 USUARIOS</option>
+              <option value="5">5 USUARIOS</option>
+              <option value="999">USUARIOS ILIMITADOS</option>
+            </select>
+          </div>
+
+          <div class="newInput-container">
+            <label class="label-overlay">Link Contrato</label>
+            <input class="styled-input" type="text" id="link_contract" name="link_contract" required>
+          </div>
+
+          <div class="newInput-container">
+            <label class="label-overlay">Monto Inicial del Plan</label>
+            <input class="styled-input" type="text" id="initial_amount_plan" name="initial_amount_plan" required
+              oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1');">
+          </div>
+
+          <div class="newInput-container">
+            <label class="label-overlay">Monto Pendiente</label>
+            <input class="styled-input" type="text" id="pending_amount" name="pending_amount" required
+              oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1');">
+          </div>
+
+          <div class="newInput-container">
+            <label class="label-overlay">Monto a Renovar</label>
+            <input class="styled-input" type="text" id="renew_amount" name="renew_amount" required
+              oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1');">
+          </div>
+
+
+          <div class="newInput-container">
+            <label class="label-overlay">Nro de Factura</label>
+            <input class="styled-input" type="text" id="invoice_number" name="invoice_number" required>
+          </div>
+
+          <div class="newInput-container">
+            <label class="label-overlay">Fecha de Pago</label>
+            <input class="styled-input" type="date" id="payment_date" name="payment_date" required>
+          </div>
+
+        </div>
+
+        <div class="titulo-newCliente">
+          <p>Información para Implementación</p>
+        </div>
+
+        <div class="conteiner-infoNewClient">
+
+          <div class="newInput-container">
+            <label class="label-overlay">Tiendas a Configurar</label>
+            <input class="styled-input" type="number" id="stores_conf" name="stores_conf" value="1" min="1" max="3"
+              step="1" required>
+          </div>
+
+          <div class="newInput-container">
+            <label class="label-overlay">Usuarios a Configurar</label>
+            <input class="styled-input" type="number" id="users_conf" name="users_conf" value="1" min="1" max="100"
+              step="1" required>
+          </div>
+
+          <div class="newInput-container">
+            <label class="label-overlay">Fecha de Inicio</label>
+            <input class="styled-input" type="date" id="start_date" name="start_date" required>
+          </div>
+
+
+          <div class="newInput-container">
+            <label class="label-overlay">Fecha de Fin</label>
+            <input class="styled-input" type="date" id="end_date" name="end_date" required>
+          </div>
+
+
+        </div>
+
+        <div class="conteiner-infoNewClient conteiner-infoNewClient-three">
+
+          <div class="newInput-container">
+            <label class="label-overlay"> FE </label>
+            <span class="styled-input">¿Facturación Electronica?<input class="checkbox" type="checkbox" id="fe"
+                name="fe" /><label class="label-checkbox" for="fe">-</label></span>
+          </div>
+
+          <div class="newInput-container">
+            <label class="label-overlay">Guias de Remisión</label>
+            <span class="styled-input">¿Guias de Remisión?<input class="checkbox" type="checkbox" id="guides"
+                name="guides" /><label class="label-checkbox" for="guides">-</label></span>
+          </div>
+
+          <div class="newInput-container">
+            <label class="label-overlay">¿Certificado Digital?</label>
+            <span class="styled-input">¿Tandia Comprará CD?<input class="checkbox" type="checkbox" id="buy_cd"
+                name="buy_cd" /><label class="label-checkbox" for="buy_cd">-</label></span>
+          </div>
+
+        </div>
+
+        <div class="titulo-newCliente">
+          <p>Comentarios</p>
+        </div>
+
+        <div class="conteiner-infoNewClient conteiner-infoNewClient-two">
+
+          <div class="newInput-container">
+            <label class="label-overlay">Comentario para Implementación</label>
+            <input class="styled-input" type="text" id="comment_i" name="comment_i" required>
+          </div>
+
+          <div class="newInput-container">
+            <label class="label-overlay">Comentario de Comercial</label>
+            <input class="styled-input" type="text" id="comment_c" name="comment_c" required>
+          </div>
+
+        </div>
+
+        <div class="conteiner-infoNewClient conteiner-infoNewClient-five">
+          <div class="button-Colum3">
+            <button class="styled-input styled-button_imp" type="submit" id="submit_newClient" disabled>Registrar Nuevo Cliente</button>
+          </div>
+        </div>
+
+      </div> 
+
+    </form>
+
+  </div>
+
+  <script>
+    function consultarAPI() {
+      var ruc = document.getElementById('ruc').value;
+      var doc_number = document.getElementById('doc_number').value;
+
+      if (doc_number.trim() !== '') {
+        var apiDni = 'https://dniruc.apisperu.com/api/v1/dni/' + doc_number + '?token=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJlbWFpbCI6ImphaGlyc2FuY2hlejQxNUBnbWFpbC5jb20ifQ.WJ2r47pNufhr9l7piQK9NZt9SWOu-HITdkeqk99UTbk';
+        fetch(apiDni)
+          .then(response => response.json())
+          .then(data => {
+            document.getElementById('legal_representative').value = (data.nombres || '') + ' ' + (data.apellidoPaterno || '') +  ' ' + (data.apellidoMaterno || '');
+          })
+          .catch(error => console.error('Error al consultar la API:', error));
+      }
+
+      if (ruc.trim() !== '') {
+        var apiUrl = 'https://dniruc.apisperu.com/api/v1/ruc/' + ruc + '?token=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJlbWFpbCI6ImphaGlyc2FuY2hlejQxNUBnbWFpbC5jb20ifQ.WJ2r47pNufhr9l7piQK9NZt9SWOu-HITdkeqk99UTbk';
+        fetch(apiUrl)
+          .then(response => response.json())
+          .then(data => {
+            document.getElementById('social_name').value = data.razonSocial || '';
+            document.getElementById('tax_address').value = data.direccion || '';
+          })
+          .catch(error => console.error('Error al consultar la API:', error));
+      }
+    }
+
+    document.getElementById('ruc').addEventListener('change', consultarAPI);
+    document.getElementById('doc_number').addEventListener('change', consultarAPI);
+  </script>
+
+
+  {% include 'ventas/footer.html' %}
+</body>
+
+</html>

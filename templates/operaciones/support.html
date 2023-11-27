@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="icon" href="{{ url_for('static', filename='images/tandia_icon.png') }}" type="image/x-icon">
+  <title>Lista de Clientes</title>
+</head>
+
+<body>
+  {% include 'operaciones/headerSupport.html' %}
+
+  <div class="header">
+    <form id="search-form" method="POST" action="/support">
+      <input type="text" id="search-input" name="ruc" placeholder="Buscar por RUC...">
+      <button type="submit">Buscar</button>
+    </form>
+  </div>
+
+  <div class="table-container">
+    <table class="clientes">
+      <thead>
+        <tr>
+          <th>CONTRATO</th>
+          <th>RUC</th>
+          <th>RAZON SOCIAL</th>
+          <th>PLAN</th>
+          <th>TIENDAS</th>
+          <th>USUARIOS</th>
+          <th>CORREO SOPORTE</th>
+          <th>CONTRASEÑA</th>
+          <th>I. CONTRATO</th>
+          <th>F. CONTRATO</th>
+          <th>FE</th>
+          <th>US</th>
+          <th>CONTRASEÑA</th>
+          <th>LINK CD</th>
+          <th>CONTRASEÑA</th>
+          <th>VENCIMIENTO</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for cliente in lista_clientes %}
+        <tr>
+
+          {% if cliente[40] == none %}
+          <td> - </td>
+          {% else %}
+          <td>{{ cliente[40] }}</td>
+          {% endif %}
+
+          <td>{{ cliente[3] }}</td>
+          <td>{{ cliente[5] }}</td>
+          <td>{{ cliente[16] }}</td>
+          <td>{{ cliente[18] }}</td>
+
+          {% if cliente[20] == 999 %}
+          <td> ILIMITADOS </td>
+          {% else %}
+          <td>{{ cliente[20] }}</td>
+          {% endif %}
+
+          {% if cliente[60] == none %}
+          <td> - </td>
+          {% else %}
+          <td>{{ cliente[60] }}</td>
+          {% endif %}
+
+          {% if cliente[61] == none %}
+          <td> - </td>
+          {% else %}
+          <td>{{ cliente[61] }}</td>
+          {% endif %}
+
+          <td>{{ cliente[31] }}</td>
+          <td>{{ cliente[32] }}</td>
+
+          {% if cliente[23] == 1 %}
+          <td class="green-true"> Sí </td>
+          {% else %}
+          <td class="red-false"> No </td>
+          {% endif%}
+
+          {% if cliente[49] == none %}
+          <td> - </td>
+          {% else %}
+          <td>{{ cliente[49] }}</td>
+          {% endif %}
+
+          {% if cliente[50] == none %}
+          <td> - </td>
+          {% else %}
+          <td>{{ cliente[50] }}</td>
+          {% endif %}
+
+          {% if cliente[51] == none %}
+          <td> - </td>
+          {% else %}
+          <td><a href="{{cliente[51]}}" target="_blank"> DESCARGAR </a></td>
+          {% endif %}
+
+          {% if cliente[52] == none %}
+          <td> - </td>
+          {% else %}
+          <td>{{ cliente[52] }}</td>
+          {% endif %}
+
+          {% if cliente[53] == none %}
+          <td> - </td>
+          {% else %}
+          <td>{{ cliente[53] }}</td>
+          {% endif %}
+
+          {% endfor %}
+      </tbody>
+    </table>
+    <div class="pagination">
+      <button id="prevPage"><i class="fa-solid fa-backward"></i></button>
+      <button id="prevPageNumber">0</button>
+      <button id="currentPage">1</button>
+      <button id="nextPageNumber">2</button>
+      <button id="nextPage"><i class="fa-solid fa-forward"></i></button>
+    </div>
+  </div>
+
+  {% include 'operaciones/footer.html' %}
+</body>
+
+</html>

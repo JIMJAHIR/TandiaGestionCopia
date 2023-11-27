@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="icon" href="{{ url_for('static', filename='images/tandia_icon.png') }}" type="image/x-icon">
+  <title>Lista de Clientes</title>
+</head>
+
+<body>
+  {% include 'ventas/headerSale.html' %}
+
+  <div class="header">
+    <form id="search-form" method="POST" action="/sale">
+      <input type="text" id="search-input" name="ruc" placeholder="Buscar por RUC...">
+      <button type="submit">Buscar</button>
+    </form>
+
+    <form id="add-customer-form" action="/newSale">
+      <button type="submit"><i class="fa-solid fa-plus"></i> Agregar Cliente</button>
+    </form>
+  </div>
+
+  <div class="table-container">
+    <table class="clientes">
+      <thead>
+        <tr>
+          <th>CONTRATO</th>
+          <th>RUC</th>
+          <th>EJECUTIVO COMERCIAL</th>
+          <th>TIPO DE CIERRE</th>
+          <th>PLAN</th>
+          <th>VIGENCIA</th>
+          <th>CLIENTE</th>
+          <th>TELEFONO</th>
+          <th>RUBRO</th>
+          <th>ESTADO</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for cliente in lista_clientes %}
+        <tr>
+          <td>{{ cliente[40] }}</td>
+          <td>{{ cliente[3] }}</td>
+          <td>{{ cliente[68] }}</td>
+          <td>{{ cliente[2] }}</td>
+          <td>{{ cliente[16] }}</td>
+          <td>{{ cliente[17] }}</td>
+          <td>{{ cliente[10] }}</td>
+          <td>{{ cliente[12] }}</td>
+          <td>{{ cliente[9] }}</td>
+
+          {% if cliente[62] == none %}
+          <td class="red-false"> INACTIVO </td>
+          {% elif cliente[62] == 'ACTIVO' %}
+          <td class="green-true"> ACTIVO </td>
+          {% else %}
+          <td class="red-false"> DADO DE BAJA </td>
+          {% endif %}
+
+        <tr>
+        {% endfor %}
+      </tbody>
+    </table>
+    <div class="pagination">
+      <button id="prevPage"><i class="fa-solid fa-backward"></i></button>
+      <button id="prevPageNumber">0</button>
+      <button id="currentPage">1</button>
+      <button id="nextPageNumber">2</button>
+      <button id="nextPage"><i class="fa-solid fa-forward"></i></button>
+    </div>
+  </div>
+
+  {% include 'ventas/footer.html' %}
+</body>
+
+</html>

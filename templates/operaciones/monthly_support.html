@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="icon" href="{{ url_for('static', filename='images/tandia_icon.png') }}" type="image/x-icon">
+  <title>Soporte Mensual</title>
+</head>
+
+<body>
+  {% include 'operaciones/headerSupport.html' %}
+
+  <div class="header">
+    <!--<form id="search-form" method="POST" action="/follow_up">
+      <input type="text" id="search-input" name="ruc" placeholder="Buscar por RUC...">
+      <button type="submit">Buscar</button>
+    </form>-->
+    <button type="button" class="buttom_header newRegister">Nuevo Registro</button>
+  </div>
+
+  <div class="table-container">
+    <table class="clientes">
+      <thead>
+        <tr>
+          <th style="display:none;">ID</th>
+          <th>MES</th>
+          <th>AÑO</th>
+          <th>ESTADO</th>
+          <th>ACCIONES</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for list in list %}
+        <tr>
+          <td style="display:none;">{{ list[0] }}</td>
+          <td>{{ list[1] }}</td>
+          <td>{{ list[2] }}</td>
+
+          {% if list[3] == 'EN PROCESO' %}
+          <td><a class="orange-proces"> EN PROCESO </a></td>
+          {% else %}
+          <td class="green-true"> FINALIZADO </td>
+          {% endif %}
+
+
+          <th><a href="{{ url_for('operaciones.detail_MonthlyS', register_id=list[0]) }}" target="_blank"><i
+                class="fa-solid fa-circle-info"></i>
+              <a class="active-button"><i class="fa-solid fa-check"></i></a></th>
+        </tr> 
+        {% endfor %}
+      </tbody>
+    </table>
+    <div class="pagination">
+      <button id="prevPage"><i class="fa-solid fa-backward"></i></button>
+      <button id="prevPageNumber">0</button>
+      <button id="currentPage">1</button>
+      <button id="nextPageNumber">2</button>
+      <button id="nextPage"><i class="fa-solid fa-forward"></i></button>
+    </div>
+  </div>
+
+  <div id="newRegister-popup" class="popup" > 
+    <div class="popup-content">
+      <h2>Confirmación</h2>
+      <p>Añadir Registro Mensual</p>
+
+      <form method="post" action="/newRegister" autocomplete="off">
+        <button type="submit" class="styled-input styled-accept-popUp" id="confirm-newRegister">Aceptar</button>
+        <button class="styled-input styled-cancel-popUp " id="newRegister-cancel">Cancelar</button>
+      </form>
+      
+    </div>
+  </div>
+
+  <div id="active-popup" class="popup">
+    <div class="popup-content">
+      <h2>Confirmación</h2>
+      <p>Finalizar Registro Mensual</p>
+
+      <form method="post" action="/endMonthlySupport" autocomplete="off">
+        <input type="hidden" id="monthlySupport_id" name="monthlySupport_id" value="">
+        <button type="submit" class="styled-input styled-accept-popUp" id="confirm-active">Aceptar</button>
+        <button class="styled-input styled-cancel-popUp" id="active-cancel">Cancelar</button>
+      </form>
+    </div>
+  </div>
+
+  
+
+  <script>
+    const newRegisterButton = document.querySelectorAll('.newRegister');
+    const newRegisterPopup = document.getElementById('newRegister-popup');
+    const confirmnewRegisterButton = document.getElementById('confirm-newRegister');
+    const newRegisterCancelButton = document.getElementById('newRegister-cancel');
+  
+    newRegisterButton.forEach(button => {
+      button.addEventListener('click', () => {
+        newRegisterPopup.style.display = 'block';
+      });
+    });
+  
+    newRegisterCancelButton.addEventListener('click', () => {
+      event.preventDefault();
+      newRegisterPopup.style.display = 'none';
+    });
+  </script>
+
+<script>
+  const activeButton = document.querySelectorAll('.active-button');
+  const activePopup = document.getElementById('active-popup');
+  const confirmActiveButton = document.getElementById('confirm-active');
+  const activeCancelButton = document.getElementById('active-cancel');
+  const monthlySupport_idInput = document.getElementById('monthlySupport_id');
+
+  activeButton.forEach(button => {
+    button.addEventListener('click', () => {
+      activePopup.style.display = 'block';
+      const monthlySupport_id = button.parentElement.parentElement.querySelector('td:nth-child(1)').textContent;
+      monthlySupport_idInput.value = monthlySupport_id; // Asigna el valor del RUC a 'ruc_C' input
+      console.log('Valor del campo id_followInput:', monthlySupport_idInput.value);
+    });
+  });
+
+  activeCancelButton.addEventListener('click', () => {
+    event.preventDefault();
+    activePopup.style.display = 'none';
+  });
+</script>
+
+  {% include 'operaciones/footer.html' %}
+
+</body>
+
+</html>

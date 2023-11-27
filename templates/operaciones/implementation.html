@@ -1,0 +1,301 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="icon" href="{{ url_for('static', filename='images/tandia_icon.png') }}" type="image/x-icon">
+  <title>Implementación</title>
+</head>
+
+<body>
+  {% include 'operaciones/headerSupport.html' %}
+
+  {% if client and client != [""] %}
+  <div class="conteiner-new conteiner-imp">
+    <form method="post" action="{{ url_for('operaciones.newImplmentation')}}" autocomplete="off">
+
+      <div class="inf-conteiner-newClient">
+
+        <div class="titulo-newCliente">
+          <p>Información Implementación</p>
+        </div>
+
+        <div class="conteiner-infoNewClient conteiner-infoNewClient-three">
+
+          <div class="newInput-container">
+            <label class="label-overlay">Ruc</label>
+            <input class="styled-input" type="text" id="ruc" name="ruc" required
+              oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1');"
+              value="{{ client }}" placeholder="{{ client }}">
+            <span class="ruc-validation-message" id="ruc-validation-message"></span>
+          </div>
+
+          <div class="newInput-container">
+            <label class="label-overlay">Nro de Contrato</label>
+            <input class="styled-input" type="text" id="contract_number" name="contract_number" required>
+          </div>
+
+          <div class="newInput-container">
+            <label class="label-overlay">Clave Sol</label>
+            <span class="styled-input">¿Cliente brindó Clave Sol?<input class="checkbox" type="checkbox"
+                id="pass_sun_boolean" name="pass_sun_boolean" onchange="habilitarSecciones()" /><label
+                class="label-checkbox" for="pass_sun_boolean">Toggle</label></span>
+          </div>
+
+        </div>
+
+        <div class="conteiner-infoNewClient conteiner-infoNewClient-three">
+
+          <div class="seccion-implementador" style="display: none;">
+            <div class="newInput-container">
+              <label class="label-overlay">Clave Sol</label>
+              <input class="styled-input" type="text" id="pass_sun" name="pass_sun">
+            </div>
+          </div>
+
+          <div class="seccion-implementador" style="display: none;">
+            <div class="newInput-container">
+              <label class="label-overlay">Contraseña Clave Sol</label>
+              <input class="styled-input" type="text" id="pass_pass_sun" name="pass_pass_sun">
+            </div>
+          </div>
+
+        </div>
+
+        <div class="conteiner-infoNewClient conteiner-infoNewClient-three">
+          <div class="newInput-container">
+            <label class="label-overlay">Nombre Comercial</label>
+            <input class="styled-input" type="text" id="comercial_name" name="comercial_name" required>
+          </div>
+
+          <div class="newInput-container">
+            <label class="label-overlay">Dirección Comercial</label>
+            <input class="styled-input" type="text" id="comercial_address" name="comercial_address" required>
+          </div>
+
+          <div class="newInput-container">
+            <label class="label-overlay">Nro de Telefono Comercial</label>
+            <input class="styled-input" type="text" id="comercial_phone" name="comercial_phone" required>
+          </div>
+        </div>
+
+        <div class="conteiner-infoNewClient conteiner-infoNewClient-three">
+          <div class="newInput-container">
+            <label class="label-overlay">Correo Comercial</label>
+            <input class="styled-input" type="email" id="comercial_email" name="comercial_email" required>
+          </div>
+
+          <div class="newInput-container">
+            <label class="label-overlay">Tipo de Impuesto</label>
+            <select class="styled-input" name="taxes">
+              <option value="IGV 18%">IGV 18%</option>
+              <option value="IGV 10%">IGV 10%</option>
+              <option value="EXONERADO">EXONERADO</option>
+            </select>
+          </div>
+
+        </div>
+
+        <div class="conteiner-infoNewClient conteiner-infoNewClient-three">
+          <div class="newInput-container">
+            <label class="label-overlay">Usuario Secundario</label>
+            <input class="styled-input" type="text" id="secundary_user" name="secundary_user" required>
+          </div>
+
+          <div class="newInput-container">
+            <label class="label-overlay">Contraseña US</label>
+            <input class="styled-input" type="text" id="pass_secundary_user" name="pass_secundary_user" required>
+          </div>
+
+        </div>
+
+        <div class="conteiner-infoNewClient conteiner-infoNewClient-three">
+          <div class="newInput-container">
+            <label class="label-overlay">Certificado Digital</label>
+            <input class="styled-input" type="text" id="url_cd" name="url_cd" required>
+          </div>
+
+          <div class="newInput-container">
+            <label class="label-overlay">Contraseña CD</label>
+            <input class="styled-input" type="text" id="pass_cd" name="pass_cd" required>
+          </div>
+
+          <div class="newInput-container">
+            <label class="label-overlay">Vencimiento CD</label>
+            <input class="styled-input" type="date" id="expiration_cd" name="expiration_cd" required>
+          </div>
+
+        </div>
+
+        <div class="conteiner-infoNewClient conteiner-infoNewClient-three">
+          <div class="newInput-container">
+            <label class="label-overlay">Clave Guias de Remisión</label>
+            <input class="styled-input" type="text" id="gr_pass" name="gr_pass">
+          </div>
+
+          <div class="newInput-container">
+            <label class="label-overlay">ID Guia de Remisión</label>
+            <input class="styled-input" type="text" id="gr_id" name="gr_id">
+          </div>
+
+        </div>
+      </div>
+
+      <div class="conteiner-infoNewClient conteiner-infoNewClient-five">
+        <div class="button-Colum3">
+          <button class="styled-input styled-button_imp" type="submit" id="submit_implementation" disabled>Registrar
+            info de Implementación</button>
+        </div>
+      </div>
+
+    </form>
+  </div>
+  {% else %}
+  <div class="conteiner-new conteiner-imp">
+    <form method="post" action="{{ url_for('operaciones.newImplmentation')}}" autocomplete="off">
+
+      <div class="inf-conteiner-newClient">
+
+        <div class="titulo-newCliente">
+          <p>Información Implementación</p>
+        </div>
+
+        <div class="conteiner-infoNewClient conteiner-infoNewClient-three">
+
+          <div class="newInput-container">
+            <label class="label-overlay">Ruc</label>
+            <input class="styled-input" type="text" id="ruc" name="ruc" required
+              oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1');">
+            <span class="ruc-validation-message" id="ruc-validation-message"></span>
+          </div>
+
+          <div class="newInput-container">
+            <label class="label-overlay">Nro de Contrato</label>
+            <input class="styled-input" type="text" id="contract_number" name="contract_number" required>
+          </div>
+
+          <div class="newInput-container">
+            <label class="label-overlay">Clave Sol</label>
+            <span class="styled-input">¿Cliente brindó Clave Sol?<input class="checkbox" type="checkbox"
+                id="pass_sun_boolean" name="pass_sun_boolean" onchange="habilitarSecciones()" /><label
+                class="label-checkbox" for="pass_sun_boolean">Toggle</label></span>
+          </div>
+
+        </div>
+
+        <div class="conteiner-infoNewClient conteiner-infoNewClient-three">
+
+          <div class="seccion-implementador" style="display: none;">
+            <div class="newInput-container">
+              <label class="label-overlay">Clave Sol</label>
+              <input class="styled-input" type="text" id="pass_sun" name="pass_sun">
+            </div>
+          </div>
+
+          <div class="seccion-implementador" style="display: none;">
+            <div class="newInput-container">
+              <label class="label-overlay">Contraseña Clave Sol</label>
+              <input class="styled-input" type="text" id="pass_pass_sun" name="pass_pass_sun">
+            </div>
+          </div>
+
+        </div>
+
+        <div class="conteiner-infoNewClient conteiner-infoNewClient-three">
+          <div class="newInput-container">
+            <label class="label-overlay">Nombre Comercial</label>
+            <input class="styled-input" type="text" id="comercial_name" name="comercial_name" required>
+          </div>
+
+          <div class="newInput-container">
+            <label class="label-overlay">Dirección Comercial</label>
+            <input class="styled-input" type="text" id="comercial_address" name="comercial_address" required>
+          </div>
+
+          <div class="newInput-container">
+            <label class="label-overlay">Nro de Telefono Comercial</label>
+            <input class="styled-input" type="text" id="comercial_phone" name="comercial_phone" required>
+          </div>
+        </div>
+
+        <div class="conteiner-infoNewClient conteiner-infoNewClient-three">
+          <div class="newInput-container">
+            <label class="label-overlay">Correo Comercial</label>
+            <input class="styled-input" type="email" id="comercial_email" name="comercial_email" required>
+          </div> 
+
+          <div class="newInput-container">
+            <label class="label-overlay">Tipo de Impuesto</label>
+            <select class="styled-input" name="taxes">
+              <option value="IGV 18%">IGV 18%</option>
+              <option value="IGV 10%">IGV 10%</option>
+              <option value="EXONERADO">EXONERADO</option>
+            </select>
+          </div>
+
+        </div>
+
+        <div class="conteiner-infoNewClient conteiner-infoNewClient-three">
+          <div class="newInput-container">
+            <label class="label-overlay">Usuario Secundario</label>
+            <input class="styled-input" type="text" id="secundary_user" name="secundary_user" required>
+          </div>
+
+          <div class="newInput-container">
+            <label class="label-overlay">Contraseña US</label>
+            <input class="styled-input" type="text" id="pass_secundary_user" name="pass_secundary_user" required>
+          </div>
+
+        </div>
+
+        <div class="conteiner-infoNewClient conteiner-infoNewClient-three">
+          <div class="newInput-container">
+            <label class="label-overlay">Certificado Digital</label>
+            <input class="styled-input" type="text" id="url_cd" name="url_cd" required>
+          </div>
+
+          <div class="newInput-container">
+            <label class="label-overlay">Contraseña CD</label>
+            <input class="styled-input" type="text" id="pass_cd" name="pass_cd" required>
+          </div>
+
+          <div class="newInput-container">
+            <label class="label-overlay">Vencimiento CD</label>
+            <input class="styled-input" type="date" id="expiration_cd" name="expiration_cd" required>
+          </div>
+
+        </div>
+
+        <div class="conteiner-infoNewClient conteiner-infoNewClient-three">
+          <div class="newInput-container">
+            <label class="label-overlay">Clave Guias de Remisión</label>
+            <input class="styled-input" type="text" id="gr_pass" name="gr_pass">
+          </div>
+
+          <div class="newInput-container">
+            <label class="label-overlay">ID Guia de Remisión</label>
+            <input class="styled-input" type="text" id="gr_id" name="gr_id">
+          </div>
+
+        </div>
+      </div>
+
+      <div class="conteiner-infoNewClient conteiner-infoNewClient-five">
+        <div class="button-Colum3">
+          <button class="styled-input styled-button_imp" type="submit" id="submit_implementation" disabled>Registrar
+            info de Implementación</button>
+        </div>
+      </div>
+
+    </form>
+  </div>
+  {% endif %}
+
+
+
+
+  {% include 'operaciones/footer.html' %}
+</body>
+
+</html>

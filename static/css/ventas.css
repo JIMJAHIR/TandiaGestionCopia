@@ -1,0 +1,13 @@
+/* CONTEINER VENTA EXTRA*/
+
+.conteiner-ex {
+  height: 50vh;
+}
+
+/* Estilo para coentario de 2 columnas */
+
+.newInput-containerSup {
+  display: grid;
+  grid-column: 2 / 4;
+}
+

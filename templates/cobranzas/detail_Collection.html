@@ -1,0 +1,262 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="icon" href="{{ url_for('static', filename='images/tandia_icon.png') }}" type="image/x-icon">
+  <title>Detalle Seguimiento</title>
+</head>
+
+<body>
+  {% include 'cobranzas/headerCollection.html' %}
+
+  <div class="header">
+    <!--<form id="search-form" method="POST" action="/follow_up">
+      <input type="text" id="search-input" name="ruc" placeholder="Buscar por RUC...">
+      <button type="submit">Buscar</button>-->
+    </form>
+  </div>
+
+  <div class="table-container">
+    <table class="clientes">
+      <thead>
+        <tr>
+          <th style="display:none;">ID</th>
+          <th style="display:none;">CLIENT ID</th>
+          <th>CONTRATO</th>
+          <th>RUC</th>
+          <th>CLIENTE</th>
+          <th>NUMERO</th>
+          <th>PLAN</th>
+          <th>VIGENCIA</th>
+          <th>MONTO</th>
+          <th>VENCIMIENTO</th>
+          <th>PROMOCION</th>
+          <th>ESTADO RENOVACION</th>
+          <th>ACCIONES</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for details in details %}
+        <tr>
+          <td style="display:none;">{{ details[0] }}</td>
+          <td style="display:none;">{{ details[6] }}</td>
+          <td>{{ details[46] }}</td>
+          <td>{{ details[2] }}</td>
+          <td>{{ details[16] }}</td>
+          <td>{{ details[18] }}</td>
+          <td>{{ details[22] }}</td>
+          <td>{{ details[23] }}</td>
+          <td>{{ details[35] }}</td>
+          <td>{{ details[38] }}</td>
+          <td>{{ details[3] }}</td>
+
+          {% if details[4] == 'PENDIENTE' %}
+          <td><a class="active-button  red-false"> PENDIENTE </a></td>
+          {% elif details[4] == 'RENOVADO' %}
+          <td><a class="active-button  green-true"> RENOVADO </a></td>
+          {% else %}
+          <td class="active-button red-false"> DADO DE BAJA </td>
+          {% endif %}
+
+
+          <td>
+            <a href="{{ url_for('cobranzas.detail_collectionC', id_details=details[0]) }}" target="_blank"><i
+                class="fa-solid fa-eye"></i></a>
+            <a class="call-button"><i class="fa-solid fa-phone"></i></a>
+            <a class="edit-button"><i class="fa-solid fa-pen"></i></a>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+    <div class="pagination">
+      <button id="prevPage"><i class="fa-solid fa-backward"></i></button>
+      <button id="prevPageNumber">0</button>
+      <button id="currentPage">1</button>
+      <button id="nextPageNumber">2</button>
+      <button id="nextPage"><i class="fa-solid fa-forward"></i></button>
+    </div>
+  </div>
+
+  <div id="active-popup" class="popup">
+    <div class="popup-content">
+      <h2>Confirmación</h2>
+      <p>¿El cliente renovó?</p>
+
+      <form method="post" action="/detail_collection_active" autocomplete="off">
+        <input type="hidden" id="id_collectionA" name="id_collectionA" value="{{ id_collection }}">
+        <input type="hidden" id="detail_idA" name="detail_idA" value="">
+        <input type="hidden" id="ruc_A" name="ruc_A" value="">
+        <div>
+          <label for="activo_si">
+            <input type="radio" id="activo_si" name="activo" value="SI" required> Sí
+          </label>
+
+          <label for="activo_no">
+            <input type="radio" id="activo_no" name="activo" value="NO" required> No
+          </label>
+        </div>
+        <button type="submit" class="styled-input styled-accept-popUp" id="confirm-active">Aceptar</button>
+        <button class="styled-input styled-cancel-popUp" id="active-cancel">Cancelar</button>
+      </form>
+    </div>
+  </div>
+
+  <div id="call-popup" class="popup">
+    <div class="popup-content">
+      <h2>Confirmación</h2>
+      <p>CONTACTO SEGUIMIENTO</p>
+
+      <form method="post" action="/detail_collection_contact" autocomplete="off">
+        <input type="hidden" id="id_collection" name="id_collection" value="{{ id_collection }}">
+        <input type="hidden" id="detail_id" name="detail_id" value="">
+
+        <div class="newInput-container">
+          <label class="label-overlay">Clasificación</label>
+          <select class="styled-input" name="type_contact">
+            <option value="LLAMADA">LLAMADA</option>
+            <option value="WHATSAPP">WHATSAPP</option>
+          </select>
+        </div>
+
+        <div class="newInput-container">
+          <label class="label-overlay">Comentario</label>
+          <input class="styled-input" type="text" id="comment_contact" name="comment_contact" required>
+        </div>
+
+
+
+        <button type="submit" class="styled-input styled-accept-popUp" id="confirm-call">Aceptar</button>
+      </form>
+
+      <button class="styled-input styled-cancel-popUp" id="call-cancel">Cancelar</button>
+    </div>
+  </div>
+
+  <div id="edit-popup" class="popup">
+    <div class="popup-content">
+      <h2>Confirmación</h2>
+      <p>¿Editar Registro?</p>
+
+      <form method="post" action="/detail_collection_edit" autocomplete="off">
+        <input type="hidden" id="id_collection" name="id_collection" value="{{ id_collection }}">
+        <input type="hidden" id="client_Id" name="client_Id" value="">
+        <input type="hidden" id="id_details" name="id_details" value="">
+
+        <div class="newInput-container">
+          <label class="label-overlay">MONTO</label>
+          <input class="styled-input" type="text" id="renew_amount" name="renew_amount" required>
+        </div>
+
+        <div class="newInput-container">
+          <label class="label-overlay">VENCIMIENTO</label>
+          <input class="styled-input" type="date" id="end_date" name="end_date" required>
+        </div>
+
+        <div class="newInput-container">
+          <label class="label-overlay">PROMOCION</label>
+          <input class="styled-input" type="text" id="promotion" name="promotion" required>
+        </div>
+
+        <div class="newInput-container">
+          <label class="label-overlay">COMENTARIO</label>
+          <input class="styled-input" type="text" id="commentry" name="commentry" required>
+        </div>
+
+        <button type="submit" class="styled-input styled-accept-popUp" id="confirm-edit">Aceptar</button>
+        <button class="styled-input styled-cancel-popUp" id="edit-cancel">Cancelar</button>
+      </form>
+
+
+    </div>
+  </div>
+
+
+  <script>
+    const activeButton = document.querySelectorAll('.active-button');
+    const activePopup = document.getElementById('active-popup');
+    const confirmActiveButton = document.getElementById('confirm-active');
+    const activeCancelButton = document.getElementById('active-cancel');
+    const rucAInput = document.getElementById('ruc_A');
+    const detail_idA = document.getElementById('detail_idA');
+
+    activeButton.forEach(button => {
+      button.addEventListener('click', () => {
+        activePopup.style.display = 'block';
+        const ruc = button.parentElement.parentElement.querySelector('td:nth-child(4)').textContent;
+        const detail_id = button.parentElement.parentElement.querySelector('td:nth-child(1)').textContent;
+        detail_idA.value = detail_id; // Asigna el valor del RUC a 'ruc_C' input
+        rucAInput.value = ruc; // Asigna el valor del RUC a 'ruc_C' input
+        console.log('Valor del campo RUC_A:', rucAInput.value);
+        console.log('Valor del campo detail_idA:', detail_idA.value);
+      });
+    });
+
+    activeCancelButton.addEventListener('click', () => {
+      activePopup.style.display = 'none';
+    });
+  </script>
+
+  <script>
+    const callButton = document.querySelectorAll('.call-button');
+    const callPopup = document.getElementById('call-popup');
+    const confirmCallButton = document.getElementById('confirm-call');
+    const callCancelButton = document.getElementById('call-cancel');
+    const detail_id = document.getElementById('detail_id');
+
+    callButton.forEach(button => {
+      button.addEventListener('click', () => {
+        callPopup.style.display = 'block';
+        const detail = button.parentElement.parentElement.querySelector('td:nth-child(1)').textContent;
+        detail_id.value = detail;
+        console.log('Valor del campo detail_id:', detail_id.value);
+      });
+    });
+
+    callCancelButton.addEventListener('click', () => {
+      callPopup.style.display = 'none';
+    });
+  </script>
+
+  <script>
+    const editButton = document.querySelectorAll('.edit-button');
+    const editPopup = document.getElementById('edit-popup');
+    const confirmEditButton = document.getElementById('confirm-edit');
+    const editCancelButton = document.getElementById('edit-cancel');
+    const id_details = document.getElementById('id_details');
+    const renew_amount = document.getElementById('renew_amount');
+    const end_date = document.getElementById('end_date');
+    const promotion = document.getElementById('promotion');
+    const client = document.getElementById('client_Id');
+
+    editButton.forEach(button => {
+      button.addEventListener('click', () => {
+        editPopup.style.display = 'block';
+        const id = button.parentElement.parentElement.querySelector('td:nth-child(1)').textContent;
+        const renew = button.parentElement.parentElement.querySelector('td:nth-child(9)').textContent;
+        const end = button.parentElement.parentElement.querySelector('td:nth-child(10)').textContent;
+        const prom = button.parentElement.parentElement.querySelector('td:nth-child(11)').textContent;
+        const client = button.parentElement.parentElement.querySelector('td:nth-child(2)').textContent;
+        id_details.value = id;
+        renew_amount.value = renew;
+        end_date.value = end;
+        promotion.value = prom;
+        client_Id.value = client;
+        console.log('Valor del campo id_details:', id_details.value);
+        console.log('Valor del campo renew_amount:', renew_amount.value);
+        console.log('Valor del campo RUC_E:', client_Id.value);
+      });
+    });
+
+    editCancelButton.addEventListener('click', () => {
+      event.preventDefault();
+      editPopup.style.display = 'none';
+    });
+  </script>
+
+  {% include 'cobranzas/footer.html' %}
+
+</body>
+
+</html>

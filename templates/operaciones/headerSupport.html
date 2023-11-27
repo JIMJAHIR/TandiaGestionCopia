@@ -1,0 +1,49 @@
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="{{ url_for('static', filename='css/estilos.css') }}">
+<link rel="stylesheet" href="{{ url_for('static', filename='css/operaciones.css') }}">
+<link href="https://fonts.googleapis.com/css2?family=Montserrat&family=Raleway:wght@100&display=swap" rel="stylesheet">
+<script src="https://kit.fontawesome.com/26112bca0b.js" crossorigin="anonymous"></script>
+
+<nav class="navbar">
+
+  <div class="logo">
+    <img src="{{ url_for('static', filename='images/tandia_logo_w.png') }}" alt="Logo de la empresa">
+  </div>
+
+  <div class="menu">
+    <ul>
+      <li><a>Clientes</a>
+        <ul>
+          <li><a href="{{ url_for('operaciones.support') }}">Lista de Clientes</a></li>
+          <li><a href="{{ url_for('operaciones.searchSupport') }}">Busqueda de Clientes</a></li>
+        </ul>
+      </li>
+      <li><a>Implementación</a>
+        <ul>
+          <li><a href="{{ url_for('operaciones.list_implementation') }}">Lista Implementación</a></li>
+          <li><a href="{{ url_for('operaciones.implementation') }}">Implementación</a></li>
+        </ul>
+      </li>
+      <li><a>Seguimiento</a>
+        <ul>
+          <li><a href="{{ url_for('operaciones.follow_up') }}">Seguimiento Nuevos</a></li>
+          <li><a href="{{ url_for('operaciones.list_train') }}">Capacitaciones</a></li>
+          <li><a href="{{ url_for('operaciones.inactive_tracking') }}">Seguimiento Inactivos</a></li>
+        </ul>
+      </li>
+      <li><a>Soporte</a>
+        <ul>
+          <li><a href="{{ url_for('operaciones.monthly_support') }}">Soporte Mensual</a></li>
+        </ul>
+      </li>
+    </ul>
+  </div>
+
+  <div class="user-info">
+    <p>Bienvenido{% if user_full_name and user_area %}
+    <p>{{ user_full_name }}</p>
+    {% endif %}</p>
+    <a href="/cerrarSesion"><i class="fa-solid fa-right-from-bracket"></i></a>
+  </div>
+</nav>

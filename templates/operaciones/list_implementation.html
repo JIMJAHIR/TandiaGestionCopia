@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="icon" href="{{ url_for('static', filename='images/tandia_icon.png') }}" type="image/x-icon">
+  <title>Lista Implementación</title>
+</head>
+
+<body>
+  {% include 'operaciones/headerSupport.html' %}
+
+  <div class="header">
+    <form id="search-form" method="POST" action="/list_implementation">
+      <input type="text" id="search-input" name="ruc" placeholder="Buscar por RUC...">
+      <button type="submit">Buscar</button>
+    </form>
+  </div>
+
+  <div class="table-container">
+
+    <table class="clientes">
+      <thead>
+        <tr>
+          <th>CONTRATO</th>
+          <th>RUC</th>
+          <th>PLAN</th>
+          <th>TIENDAS A CONFIGURAR</th>
+          <th>USUARIOS A CONFIGURAR</th>
+          <th>I. CONTRATO</th>
+          <th>F. CONTRATO</th>
+          <th>FE</th>
+          <th>BUY CD</th>
+          <th>GUIAS</th>
+          <th>ESTADO</th>
+          <th>COMPAÑIA</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for cliente in lista_clientes %}
+        <tr>
+          {% if cliente[40] == none %}
+          <td> - </td>
+          {% else %}
+          <td>{{ cliente[40] }}</td>
+          {% endif %}
+
+          <td>{{ cliente[3] }}</td>
+          <td>{{ cliente[16] }}</td>
+          <td>{{ cliente[19] }}</td>
+          <td>{{ cliente[21] }}</td>
+          <td>{{ cliente[31] }}</td>
+          <td>{{ cliente[32] }}</td>
+          {% if cliente[23] == 1 %}
+          <td class="green-true"> Sí </td>
+          {% else %}
+          <td class="red-false"> NO </td>
+          {% endif %}
+          {% if cliente[24] == 1 %}
+          <td class="green-true"> Sí </td>
+          {% else %}
+          <td class="red-false"> NO </td>
+          {% endif %}
+          {% if cliente[25] == 1 %}
+          <td class="green-true"> Sí </td>
+          {% else %}
+          <td class="red-false"> NO </td>
+          {% endif %}
+          {% if cliente[36] == 'PENDIENTE' %}
+          <td>
+            <a class="edit-button red-false" href="/implementation?cliente={{ cliente[3] }}">IMPLEMENTAR</a>
+          </td>
+          {% else %}
+          <td class="orange-proces"> EN PROCESO </td>
+          {% endif %}
+          {% if cliente[36] == 'EN PROCESO' %}
+          <td> <a class="registrar-button  green-true"> AGREGAR + </a></td> 
+          {% else %}
+          <td> <a class="red-false"> PENDIENTE </a></td> 
+          {% endif %}
+          {% endfor %}
+      </tbody>
+    </table>
+
+    <div class="pagination">
+      <button id="prevPage"><i class="fa-solid fa-backward"></i></button>
+      <button id="prevPageNumber">0</button>
+      <button id="currentPage">1</button>
+      <button id="nextPageNumber">2</button>
+      <button id="nextPage"><i class="fa-solid fa-forward"></i></button>
+    </div>
+
+  </div>
+
+  <div id="popup" class="popup">
+    <div class="popup-content">
+      <span class="close-button" id="close-popup">&times;</span>
+      <h2>Registrar Compañía</h2>
+
+      <form method="post" action="/newCompany" autocomplete="off">
+
+        <div class="input-container">
+          <label class="label-overlay" for="ruc">Ruc</label>
+          <input class="styled-input" type="text" name="ruc" id="ruc" required>
+        </div>
+        <div class="input-container">
+          <label class="label-overlay" for="contract_number">Contrato</label>
+          <input class="styled-input" type="text" name="contract_number" id="contract_number" required>
+        </div>
+        <div class="input-container">
+          <label class="label-overlay" for="support_email">Correo</label>
+          <input class="styled-input" type="text" name="support_email" id="support_email" required>
+        </div>
+        <div class="input-container">
+          <label class="label-overlay" for="support_pas">Contraseña</label>
+          <input class="styled-input" type="password" name="support_pass" id="support_pass" required>
+        </div>
+        <button class="styled-input styled-accept-popUp2" type="submit" id="registrar-button">Registrar</button>
+  
+      </form>
+    </div>
+  </div>
+
+  <script>
+    const registrarButtons = document.querySelectorAll('.registrar-button'); // Selecciona los botones con la clase registrar-button
+    const popup = document.getElementById('popup');
+    const closePopupButton = document.getElementById('close-popup');
+    const rucValue = document.getElementById('ruc');
+    const contractValue = document.getElementById('contract_number');
+    const correo_sop = document.getElementById('correo_sop');
+    const password_sop = document.getElementById('password_sop');
+
+    registrarButtons.forEach((button, index) => {
+      button.addEventListener('click', () => {
+        const contrato = button.parentElement.parentElement.querySelector('td:nth-child(1)').textContent;
+        const ruc = button.parentElement.parentElement.querySelector('td:nth-child(2)').textContent;
+
+        // Llenar los campos en la ventana emergente
+        rucValue.value = ruc;
+        contractValue.value = contrato;
+        popup.style.display = 'block';
+      });
+    });
+
+    closePopupButton.addEventListener('click', () => {
+      event.preventDefault();
+      popup.style.display = 'none';
+    });
+
+    console.log("El botón de registro fue clickeado");
+  </script>
+
+
+
+  {% include 'operaciones/footer.html' %}
+</body>
+
+</html>

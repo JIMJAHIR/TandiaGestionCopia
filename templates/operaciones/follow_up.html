@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="icon" href="{{ url_for('static', filename='images/tandia_icon.png') }}" type="image/x-icon">
+  <title>Seguimiento Nuevos</title>
+</head>
+
+<body>
+  {% include 'operaciones/headerSupport.html' %}
+
+  <div class="header">
+    <!--<form id="search-form" method="POST" action="/follow_up">
+      <input type="text" id="search-input" name="ruc" placeholder="Buscar por RUC...">
+      <button type="submit">Buscar</button>-->
+    </form>
+  </div>
+
+  <div class="table-container">
+    <table class="clientes">
+      <thead>
+        <tr>
+          <th>CONTRATO</th>
+          <th>RUC</th>
+          <th>RESPONSABLE</th>
+          <th>CORREO</th>
+          <th>NUMERO</th>
+          <th>CORREO SOPORTE</th>
+          <th>CONTRASEÑA SOPORTE</th>
+          <th>CAPACITACIÓN</th>
+          <th>ESTADO</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for cliente in lista_clientes %}
+        <tr>
+          <td>{{ cliente[40] }}</td>
+          <td>{{ cliente[3] }}</td>
+
+          {% if cliente[13] != '' %}
+          <td>{{ cliente[13] }}</td>
+          <td>{{ cliente[14] }}</td>
+          <td>{{ cliente[15] }}</td>
+          {% else %}
+          <td>{{ cliente[10] }}</td>
+          <td>{{ cliente[11] }}</td>
+          <td>{{ cliente[12] }}</td>
+          {% endif %}
+          <td>{{ cliente[41] }}</td>
+          <td>{{ cliente[42] }}</td>
+
+          {% if cliente[44] == 'POR AGENDAR' %}
+          <td><a class="registrar-button  red-false"> AGENDAR + </a></td>
+          {% else %}
+          {% if cliente[44] == 'AGENDADA' %}
+          <td><a class="orange-proces"> AGENDADA + </a></td>
+          {% else %}
+          <td class="green-true">REALIZADA</td>
+          {% endif %}
+          {% endif %}
+
+          {% if cliente[43] == none %}
+          <td class="act-button red-false"> INACTIVO </td>
+          {% elif cliente[43] == 'ACTIVO' %}
+          <td class="green-true"> ACTIVO </td>
+          {% else %}
+          <td class="act-button red-false"> DADO DE BAJA </td>
+          {% endif %}
+
+        </tr>
+        {% endfor %}
+
+      </tbody>
+    </table>
+    <div class="pagination">
+      <button id="prevPage"><i class="fa-solid fa-backward"></i></button>
+      <button id="prevPageNumber">0</button>
+      <button id="currentPage">1</button>
+      <button id="nextPageNumber">2</button>
+      <button id="nextPage"><i class="fa-solid fa-forward"></i></button>
+    </div>
+  </div>
+
+  <div id="popup" class="popup">
+    <div class="popup-content">
+      <span class="close-button" id="close-popup">&times;</span>
+      <h2>Capacitación</h2>
+
+      <form method="post" action="/newFirstTrain" autocomplete="off">
+
+        <div class="input-container">
+          <label class="label-overlay" for="ruc">Ruc</label>
+          <input class="styled-input" type="text" name="ruc" id="ruc" required>
+        </div>
+        <div class="input-container">
+          <label class="label-overlay" for="contract_number">Contrato</label>
+          <input class="styled-input" type="text" name="contract_number" id="contract_number" required>
+        </div>
+        <div class="input-container">
+          <label class="label-overlay" for="url_train">Enlace Capacitación</label>
+          <input class="styled-input" type="text" name="url_train" id="url_train" required>
+        </div>
+        <div class="input-container input-container2">
+          <label class="label-overlay" for="date_train">Fecha</label>
+          <input class="styled-input" type="date" name="date_train" id="date_train" required>
+        </div>
+
+        <div class="newInput-container input-container2">
+          <label class="label-overlay" for="hour_train">Hora</label>
+          <select class="styled-input" name="hour_train" id="hour_train">
+            <option value="11:00:00">11:00 am</option>
+            <option value="16:00:00">04:00 pm</option>
+          </select>
+        </div>
+
+        <div class="input-container">
+          <label class="label-overlay" for="user_id_resp">Responsable</label>
+          <select class="styled-input" name="user_id_resp" id="user_id_resp">
+            {% for user in users %}
+            <option value="{{user.0}}">{{user.3}}</option>
+            {% endfor %}
+          </select>
+        </div>
+        <button class="styled-input styled-button-popUp" type="submit" id="registrar-button">Registrar</button>
+
+      </form>
+    </div>
+  </div>
+
+  <div id="act-popup" class="popup">
+    <div class="popup-content">
+      <h2>Cliente Activo</h2>
+      <p>¿El cliente usa Tandia?</p>
+
+      <form method="post" action="/activeCompany" autocomplete="off">
+        <input type="hidden" id="ruc_C" name="ruc_C" value="">
+        <button type="submit" class="styled-input styled-accept-popUp" id="confirm-accept">Aceptar</button>
+        <button class="styled-input styled-cancel-popUp" id="confirm-cancel">Cancelar</button>
+      </form>
+    </div>
+  </div>
+
+  <script>
+    const registrarButtons = document.querySelectorAll('.registrar-button'); // Selecciona los botones con la clase registrar-button
+    const popup = document.getElementById('popup');
+    const closePopupButton = document.getElementById('close-popup');
+    const rucValue = document.getElementById('ruc');
+    const contractValue = document.getElementById('contract_number');
+
+    registrarButtons.forEach((button, index) => {
+      button.addEventListener('click', () => {
+        const contrato = button.parentElement.parentElement.querySelector('td:nth-child(1)').textContent;
+        const ruc = button.parentElement.parentElement.querySelector('td:nth-child(2)').textContent;
+
+        rucValue.value = ruc;
+        contractValue.value = contrato;
+        popup.style.display = 'block';
+      });
+    });
+
+    closePopupButton.addEventListener('click', () => {
+      popup.style.display = 'none';
+    });
+  </script>
+
+  <script>
+    const actButton = document.querySelectorAll('.act-button');
+    const actPopup = document.getElementById('act-popup');
+    const confirmAcceptButton = document.getElementById('confirm-accept');
+    const confirmCancelButton = document.getElementById('confirm-cancel');
+    const rucCInput = document.getElementById('ruc_C');
+
+    actButton.forEach(button => {
+      button.addEventListener('click', () => {
+        actPopup.style.display = 'block';
+        const ruc = button.parentElement.parentElement.querySelector('td:nth-child(2)').textContent;
+        rucCInput.value = ruc; // Asigna el valor del RUC a 'ruc_C' input
+        console.log('Valor del campo RUC_A:', rucCInput.value);
+      });
+    });
+
+    confirmCancelButton.addEventListener('click', () => {
+      actPopup.style.display = 'none';
+    });
+  </script>
+
+
+  {% include 'operaciones/footer.html' %}
+</body>
+
+</html>
